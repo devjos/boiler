@@ -22,7 +22,7 @@ public class HeatTimeInterpolatorImpl implements HeatTimeInterpolator
 		// 3,5	150
 		// 0	90  // Hand
 		double[] x2 = {0.0f, 3.5f, 7.0f, 24.8f, 50.0f};
-		double[] y2 = {90f, 150f, 270f, 450f, 800f};		
+		double[] y2 = {90f, 150f, 270f, 450f, 800f};
 		interpolate2 = splineInterpolator.interpolate(x2, y2);
 		
 		
