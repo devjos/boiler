@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.schleger.boiler.boilercontroller.BoilerController;
+import de.schleger.boiler.boiler.BoilerController;
 
 public class ConfigProviderOutFileImpl implements ConfigProviderOut 
 {

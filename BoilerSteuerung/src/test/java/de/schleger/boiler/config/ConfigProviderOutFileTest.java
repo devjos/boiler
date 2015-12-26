@@ -12,7 +12,7 @@ import java.util.Properties;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.schleger.boiler.boilercontroller.DummyBoilerController;
+import de.schleger.boiler.boiler.DummyBoilerController;
 
 public class ConfigProviderOutFileTest 
 {

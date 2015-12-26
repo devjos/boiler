@@ -8,8 +8,8 @@ import java.util.TimerTask;
 
 import de.schleger.boiler.analyze.TemperatureAnalyzer;
 import de.schleger.boiler.analyze.TemperatureAnalyzerFileImpl;
-import de.schleger.boiler.boilercontroller.BoilerController;
-import de.schleger.boiler.boilercontroller.BoilerControllerGPIOImpl;
+import de.schleger.boiler.boiler.BoilerController;
+import de.schleger.boiler.boiler.BoilerControllerGPIOImpl;
 import de.schleger.boiler.config.ConfigProviderIn;
 import de.schleger.boiler.config.ConfigProviderInFileImpl;
 import de.schleger.boiler.config.ConfigProviderOut;
