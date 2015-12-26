@@ -29,7 +29,7 @@ public class ConfigProviderFileTest
 	@Test
 	public void readTemperatureFromFile() throws IOException
 	{	
-		Temperature temperatureImpl = new TemperatureImpl(38.00f);
+		Temperature temperatureImpl = new TemperatureImpl(40.00f);
 		
 		assertThat(configProviderFileImpl.getTargetTemperature(), equalTo(temperatureImpl));
 	}

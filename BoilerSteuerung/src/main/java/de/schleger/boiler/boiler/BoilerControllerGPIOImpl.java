@@ -29,6 +29,8 @@ public class BoilerControllerGPIOImpl implements BoilerController
 	@Override
 	public void setHeatPower(HeatPower heatPower) 
 	{
+		// TODO logging
+		
 		switch (heatPower) 
 		{
 			case HEAT_POWER_3:

@@ -77,6 +77,8 @@ public class TemperatureActionFilterNachtHeizungTest
 		
 		dummyTimeProvider.setNight(true);
 		dummyHeatTimeCalculator.setTimetoHeat(60);
+		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(60f));
+		dummyConfigProvider.setTargetTemperature(new TemperatureImpl(50f));
 		dummyTimeProvider.setDateAddMinutesToTime(timecalculated);
 		dummyTimeProvider.setNextNachtHezungEndTime(endNachtheizung);
 		
@@ -97,6 +99,8 @@ public class TemperatureActionFilterNachtHeizungTest
 		
 		dummyTimeProvider.setNight(true);
 		dummyHeatTimeCalculator.setTimetoHeat(60);
+		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(60f));
+		dummyConfigProvider.setTargetTemperature(new TemperatureImpl(50f));
 		dummyTimeProvider.setDateAddMinutesToTime(timecalculated);
 		dummyTimeProvider.setNextNachtHezungEndTime(endNachtheizung);
 		

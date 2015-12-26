@@ -2,6 +2,10 @@ package de.schleger.boiler.filter;
 
 import java.util.Date;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.schleger.boiler.analyze.TemperatureAnalyzer;
 import de.schleger.boiler.config.ConfigProviderIn;
 import de.schleger.boiler.config.ConfigProviderOut;
@@ -12,6 +16,8 @@ import de.schleger.boiler.time.TimeProvider;
 
 public class TemperatureActionFilterNachtHeizung implements TemperatureActionFilter {
 
+	private static final Logger LOG = LogManager.getLogger(TemperatureActionFilterNachtHeizung.class);
+	
 	private TimeProvider timeProvider;
 	private ConfigProviderIn configProviderIn;
 	private TemperatureAnalyzer temperatureAnalyzer;
@@ -41,6 +47,9 @@ public class TemperatureActionFilterNachtHeizung implements TemperatureActionFil
 				
 		int timeInMinutes = heatTimeCalculator.calculate(temperature, targetTemperature, HeatPower.HEAT_POWER_3);
 		
+		LOG.log(Level.DEBUG, "istTemperature:" + temperature.getTemperature() 
+		+ " targetTemperature:" + targetTemperature.getTemperature() + " heatTimeInMinutes:" + timeInMinutes);
+		
 		if(timeInMinutes <= 0)
 		{
 			configProviderOut.setHeatPower(HeatPower.HEAT_POWER_0);
@@ -49,6 +58,8 @@ public class TemperatureActionFilterNachtHeizung implements TemperatureActionFil
 		
 		Date calculatedEndTime = timeProvider.addMinutesToTime(timeInMinutes);
 		Date endTime = timeProvider.getNextNachtheizungEndTime();
+		
+		LOG.log(Level.DEBUG, "endTime:" + endTime + " calculatedEndTime:" + calculatedEndTime);
 		
 		if(calculatedEndTime.after(endTime))
 		{
