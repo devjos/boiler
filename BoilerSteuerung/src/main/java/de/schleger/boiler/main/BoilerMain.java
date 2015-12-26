@@ -52,6 +52,6 @@ public class BoilerMain
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList));
 	    
 	    Timer timer = new Timer();
-	    timer.schedule(boilerTaskImpl, 1000l, 15000l);
+	    timer.schedule(boilerTaskImpl, 1000l, 30000l);
 	}
 }

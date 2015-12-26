@@ -2,13 +2,13 @@ package de.schleger.boiler.task;
 
 import java.util.TimerTask;
 
-import de.schleger.boiler.schedule.BiolerSchedule;
+import de.schleger.boiler.schedule.BoilerSchedule;
 
 public class BoilerTaskImpl extends TimerTask
 {
-	private BiolerSchedule logic;
+	private BoilerSchedule logic;
 
-	public BoilerTaskImpl(BiolerSchedule logic)
+	public BoilerTaskImpl(BoilerSchedule logic)
 	{
 		this.logic = logic;
 	}

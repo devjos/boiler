@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.schleger.boiler.filter.TemperatureActionFilter;
 
-public class BoilerScheduleImpl implements BiolerSchedule
+public class BoilerScheduleImpl implements BoilerSchedule
 {	
 	private static final Logger LOG = LogManager.getLogger(BoilerScheduleImpl.class);
 
