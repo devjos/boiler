@@ -17,13 +17,13 @@ public class ConfigProviderFileTest
 	private static final String BOILER_CONF_IN = "boiler.config.in";
 	private static final File FILE_IN = new File(BOILER_CONF_IN);
 	
-	private ConfigProviderFileImpl configProviderFileImpl;
+	private ConfigProviderInFileImpl configProviderFileImpl;
 
 
 	@Before
 	public void setUp()
 	{
-		configProviderFileImpl = new ConfigProviderFileImpl(FILE_IN);
+		configProviderFileImpl = new ConfigProviderInFileImpl(FILE_IN);
 	}	
 	
 	@Test

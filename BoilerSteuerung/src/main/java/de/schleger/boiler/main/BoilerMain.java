@@ -8,12 +8,14 @@ import java.util.TimerTask;
 
 import de.schleger.boiler.analyze.TemperatureAnalyzer;
 import de.schleger.boiler.analyze.TemperatureAnalyzerFileImpl;
-import de.schleger.boiler.config.ConfigProvider;
-import de.schleger.boiler.config.ConfigProviderFileImpl;
+import de.schleger.boiler.boilercontroller.BoilerController;
+import de.schleger.boiler.boilercontroller.BoilerControllerGPIOImpl;
+import de.schleger.boiler.config.ConfigProviderIn;
+import de.schleger.boiler.config.ConfigProviderInFileImpl;
+import de.schleger.boiler.config.ConfigProviderOut;
+import de.schleger.boiler.config.ConfigProviderOutFileImpl;
 import de.schleger.boiler.filter.TemperatureActionFilter;
 import de.schleger.boiler.filter.TemperatureActionFilterNachtHeizung;
-import de.schleger.boiler.heat.HeatProvider;
-import de.schleger.boiler.heat.HeatProviderFileImpl;
 import de.schleger.boiler.heat.HeatTimeCalculator;
 import de.schleger.boiler.heat.HeatTimeCalulatorImpl;
 import de.schleger.boiler.heat.HeatTimeInterpolatorImpl;
@@ -36,9 +38,10 @@ public class BoilerMain
 	public static void main(String[] args) 
 	{
 		TimeProvider timeProviderImpl = new TimeProviderImpl();
-		ConfigProvider configProviderFileImpl = new ConfigProviderFileImpl(FILE_IN);
+		BoilerController boilerContoller = new BoilerControllerGPIOImpl();
+		ConfigProviderIn configProviderFileImpl = new ConfigProviderInFileImpl(FILE_IN);
 		TemperatureAnalyzer temperatureAnalyzerFileImpl = new TemperatureAnalyzerFileImpl(FILE_TEMP);
-		HeatProvider heatProviderFileImpl = new HeatProviderFileImpl(FILE_OUT);
+		ConfigProviderOut heatProviderFileImpl = new ConfigProviderOutFileImpl(FILE_OUT, boilerContoller);
 		HeatTimeCalculator heatTimeCalulator = new HeatTimeCalulatorImpl(new HeatTimeInterpolatorImpl());
 				
 		List<TemperatureActionFilter> temperaturActionFilterList = new ArrayList<TemperatureActionFilter>();

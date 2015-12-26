@@ -12,14 +12,14 @@ import org.apache.logging.log4j.Logger;
 import de.schleger.boiler.temperature.Temperature;
 import de.schleger.boiler.temperature.TemperatureImpl;
 
-public class ConfigProviderFileImpl implements ConfigProvider 
+public class ConfigProviderInFileImpl implements ConfigProviderIn 
 {
-	private static final Logger LOG = LogManager.getLogger(ConfigProviderFileImpl.class);
+	private static final Logger LOG = LogManager.getLogger(ConfigProviderInFileImpl.class);
 	
 	private File file;
 	private Properties prop;
 
-	public ConfigProviderFileImpl(File file) 
+	public ConfigProviderInFileImpl(File file) 
 	{
 		this.file = file;
 	}

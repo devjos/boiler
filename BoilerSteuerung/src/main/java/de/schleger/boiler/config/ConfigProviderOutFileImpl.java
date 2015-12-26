@@ -1,4 +1,4 @@
-package de.schleger.boiler.heat;
+package de.schleger.boiler.config;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,30 +9,33 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.schleger.boiler.config.ConfigKeys;
-import de.schleger.boiler.config.HeatPower;
+import de.schleger.boiler.boilercontroller.BoilerController;
 
-public class HeatProviderFileImpl implements HeatProvider 
+public class ConfigProviderOutFileImpl implements ConfigProviderOut 
 {
-	private static final Logger LOG = LogManager.getLogger(HeatProviderFileImpl.class);
+	private static final Logger LOG = LogManager.getLogger(ConfigProviderOutFileImpl.class);
 	
 	private File file;
 	private HeatPower heatPower;
 
-	public HeatProviderFileImpl(File file) 
+	private BoilerController boilerController;
+
+	public ConfigProviderOutFileImpl(File file, BoilerController boilerController) 
 	{
 		this.file = file;
+		this.boilerController = boilerController;
 	}
 	
 	@Override
-	public void heat(HeatPower heatPower)
-	{
+	public void setHeatPower(HeatPower heatPower)
+	{		
 		if(heatPower.equals(this.heatPower))
 		{
 			return;
 		}
 		
 		this.heatPower = heatPower;
+		boilerController.setHeatPower(heatPower);		
 		
 		Properties prop = new Properties();
 		prop.setProperty(ConfigKeys.HEAT_LEVEL.toString(), heatPower.toString());

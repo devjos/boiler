@@ -1,4 +1,4 @@
-package de.schleger.boiler.heat;
+package de.schleger.boiler.config;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -12,26 +12,26 @@ import java.util.Properties;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.schleger.boiler.config.ConfigKeys;
-import de.schleger.boiler.config.HeatPower;
-import de.schleger.boiler.heat.HeatProviderFileImpl;
+import de.schleger.boiler.boilercontroller.DummyBoilerController;
 
-public class HeatProviderFileTest 
+public class ConfigProviderOutFileTest 
 {
 	private static final String BOILER_CONF_OUT  = "boiler.config.out";
 	private static final File FILE_OUT = new File(BOILER_CONF_OUT);
-	private HeatProviderFileImpl heatFileImpl;
+	private ConfigProviderOutFileImpl heatFileImpl;
+	private DummyBoilerController dummyBoilerController;
 
 	@Before
 	public void setUp()
 	{
-		heatFileImpl = new HeatProviderFileImpl(FILE_OUT);
+		dummyBoilerController = new DummyBoilerController();
+		heatFileImpl = new ConfigProviderOutFileImpl(FILE_OUT, dummyBoilerController);
 	}
 		
 	@Test
-	public void writeHeatToFile() throws IOException
+	public void writeHeatToFileAndCallsBoilerController() throws IOException
 	{		
-		heatFileImpl.heat(HeatPower.HEAT_POWER_3);		
+		heatFileImpl.setHeatPower(HeatPower.HEAT_POWER_3);		
 		
 		FileReader fileReader = new FileReader(FILE_OUT);		
 		BufferedReader reader = new BufferedReader(fileReader);
@@ -40,14 +40,15 @@ public class HeatProviderFileTest
 		prop.load(reader);
 		
 		assertThat(prop.getProperty(ConfigKeys.HEAT_LEVEL.toString()), equalTo(HeatPower.HEAT_POWER_3.toString()));
+		assertThat(dummyBoilerController.getHeatPower().toString(), equalTo(HeatPower.HEAT_POWER_3.toString()));
 		
 		reader.close();
 	}
 	
 	@Test
-	public void writeNotToHeatToFile() throws IOException
+	public void writeNotToHeatToFileAndCallsBoilerController() throws IOException
 	{		
-		heatFileImpl.heat(HeatPower.HEAT_POWER_0);
+		heatFileImpl.setHeatPower(HeatPower.HEAT_POWER_0);
 		
 		FileReader fileReader = new FileReader(FILE_OUT);		
 		BufferedReader reader = new BufferedReader(fileReader);
@@ -56,6 +57,7 @@ public class HeatProviderFileTest
 		prop.load(reader);
 		
 		assertThat(prop.getProperty(ConfigKeys.HEAT_LEVEL.toString()), equalTo(HeatPower.HEAT_POWER_0.toString()));
+		assertThat(dummyBoilerController.getHeatPower().toString(), equalTo(HeatPower.HEAT_POWER_0.toString()));
 		
 		reader.close();
 	}
@@ -63,7 +65,7 @@ public class HeatProviderFileTest
 	@Test
 	public void canRememberHeatState() throws IOException
 	{		
-		heatFileImpl.heat(HeatPower.HEAT_POWER_2);
+		heatFileImpl.setHeatPower(HeatPower.HEAT_POWER_2);
 		assertThat(heatFileImpl.isHeating(), equalTo(HeatPower.HEAT_POWER_2));
 	}
 	

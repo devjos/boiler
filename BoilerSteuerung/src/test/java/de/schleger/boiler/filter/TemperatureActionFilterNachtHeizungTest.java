@@ -11,8 +11,8 @@ import org.junit.Test;
 
 import de.schleger.boiler.analyze.DummyTemperatureAnalyzer;
 import de.schleger.boiler.config.DummyConfigProvider;
+import de.schleger.boiler.config.DummyConfigProviderOut;
 import de.schleger.boiler.config.HeatPower;
-import de.schleger.boiler.heat.DummyHeatProvider;
 import de.schleger.boiler.heat.DummyHeatTimeCalculator;
 import de.schleger.boiler.temperature.TemperatureImpl;
 import de.schleger.boiler.time.DummyTimeProvider;
@@ -22,7 +22,7 @@ public class TemperatureActionFilterNachtHeizungTest
 	private DummyTimeProvider dummyTimeProvider;
 	private DummyConfigProvider dummyConfigProvider;
 	private DummyTemperatureAnalyzer dummyTemperatureAnalyzer;
-	private DummyHeatProvider dummyHeatProvider;
+	private DummyConfigProviderOut dummyConfigProviderOut;
 	private DummyHeatTimeCalculator dummyHeatTimeCalculator;
 	
 	private TemperatureActionFilterNachtHeizung mindesttemperaturFilter;
@@ -33,10 +33,10 @@ public class TemperatureActionFilterNachtHeizungTest
 		dummyTimeProvider = new DummyTimeProvider();
 		dummyConfigProvider = new DummyConfigProvider();
 		dummyTemperatureAnalyzer = new DummyTemperatureAnalyzer();
-		dummyHeatProvider = new DummyHeatProvider();
+		dummyConfigProviderOut = new DummyConfigProviderOut();
 		dummyHeatTimeCalculator = new DummyHeatTimeCalculator();
 		mindesttemperaturFilter = new TemperatureActionFilterNachtHeizung(
-				dummyTimeProvider, dummyConfigProvider, dummyTemperatureAnalyzer, dummyHeatProvider, dummyHeatTimeCalculator);
+				dummyTimeProvider, dummyConfigProvider, dummyTemperatureAnalyzer, dummyConfigProviderOut, dummyHeatTimeCalculator);
 	}
 
 	
@@ -46,7 +46,7 @@ public class TemperatureActionFilterNachtHeizungTest
 		dummyTimeProvider.setNight(false);
 		
 		assertThat(mindesttemperaturFilter.filter(), equalTo(false));
-		assertThat(dummyHeatProvider.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
+		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ public class TemperatureActionFilterNachtHeizungTest
 		assertThat(dummyHeatTimeCalculator.getStartTemp().getTemperature(), equalTo(60f));		
 		assertThat(dummyHeatTimeCalculator.getEndTemp().getTemperature(), equalTo(50f));		
 		assertThat(dummyHeatTimeCalculator.getHeatPower(), equalTo(HeatPower.HEAT_POWER_3));		
-		assertThat(dummyHeatProvider.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
+		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
 	@Test
@@ -81,7 +81,7 @@ public class TemperatureActionFilterNachtHeizungTest
 		dummyTimeProvider.setNextNachtHezungEndTime(endNachtheizung);
 		
 		assertThat(mindesttemperaturFilter.filter(), equalTo(false));		
-		assertThat(dummyHeatProvider.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
+		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
 	@Test
@@ -101,7 +101,7 @@ public class TemperatureActionFilterNachtHeizungTest
 		dummyTimeProvider.setNextNachtHezungEndTime(endNachtheizung);
 		
 		assertThat(mindesttemperaturFilter.filter(), equalTo(true));		
-		assertThat(dummyHeatProvider.isHeating(), equalTo(HeatPower.HEAT_POWER_3));		
+		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_3));		
 	}
 	
 }

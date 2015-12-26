@@ -2,7 +2,7 @@ package de.schleger.boiler.config;
 
 import de.schleger.boiler.temperature.Temperature;
 
-public class DummyConfigProvider implements ConfigProvider 
+public class DummyConfigProvider implements ConfigProviderIn 
 {
 	private Temperature targetTemperature;
 
