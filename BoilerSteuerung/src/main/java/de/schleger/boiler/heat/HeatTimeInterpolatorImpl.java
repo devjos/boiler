@@ -29,10 +29,11 @@ public class HeatTimeInterpolatorImpl implements HeatTimeInterpolator
 		// Stufe 3
 		// 50	500	// Hand
 		// 14,0	165
+		// 7,5	155
 		// 2,0	90
 		// 0	60  // Hand
-		double[] x3 = {0f, 	2.0, 14.0f, 50.0f};
-		double[] y3 = {60f, 90f, 165f, 500f};		
+		double[] x3 = {0f, 	2.0, 7.5f, 14.0f, 50.0f};
+		double[] y3 = {60f, 90f, 155f, 165f, 500f};		
 		interpolate3 = splineInterpolator.interpolate(x3, y3);
 		
 	}
