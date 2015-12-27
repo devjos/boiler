@@ -1,8 +1,6 @@
 package de.schleger.boiler.time;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 public class TimeProviderImpl implements TimeProvider 
 {
@@ -21,13 +19,7 @@ public class TimeProviderImpl implements TimeProvider
 	public boolean isNight() 
 	{
 		int hour = getTime().getHour();
-		
-		if(21 < hour || 6 > hour)
-		{
-			return true;
-		}
-		
-		return false;
+		return 21 < hour || 6 > hour;
 	}
 
 	@Override
@@ -37,7 +29,7 @@ public class TimeProviderImpl implements TimeProvider
 		LocalDateTime time = getTime();
 		int dayOfMonth = time.getDayOfMonth();
 		
-		// Wenn gr��er 6 dann ist es der n�chste Tag
+		// Wenn größer 6 dann ist es der nächste Tag
 		if(time.getHour() >= 6)
 		{
 			dayOfMonth++;
@@ -50,9 +42,7 @@ public class TimeProviderImpl implements TimeProvider
 	@Override
 	public LocalDateTime addMinutesToTime(int minutes) 
 	{		
-		ZonedDateTime t = getTime().atZone(ZoneOffset.UTC);
-		t = t.plusMinutes(minutes);
-		return t.toLocalDateTime();
+		return getTime().plusMinutes(minutes);
 	}
 	
 	public void setDateTimeProvider(LocalDateTimeProvider prov)
