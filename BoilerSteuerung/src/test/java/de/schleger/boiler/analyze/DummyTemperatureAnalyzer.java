@@ -8,7 +8,7 @@ public class DummyTemperatureAnalyzer implements TemperatureAnalyzer {
 	private Temperature t;
 
 	@Override
-	public Temperature getTemperature() 
+	public Temperature getAverageTemperature() 
 	{
 		return t;
 	}
@@ -16,5 +16,10 @@ public class DummyTemperatureAnalyzer implements TemperatureAnalyzer {
 	public void setTemperature(Temperature t)
 	{
 		this.t = t;		
+	}
+
+	@Override
+	public Temperature getLastTemperature() {
+		return t;
 	}
 }

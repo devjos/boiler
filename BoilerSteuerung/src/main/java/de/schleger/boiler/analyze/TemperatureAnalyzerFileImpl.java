@@ -7,17 +7,14 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.ReversedLinesFileReader;
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
 
 import de.schleger.boiler.temperature.Temperature;
 import de.schleger.boiler.temperature.TemperatureImpl;
 
 public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 {
-	private static final int LINES_TO_READ = 5;
+	private static final int LINES_TO_READ_DEFAULT = 5;
 	private final File file;
-	private static final Mean mean = new Mean();
-
 
 	public TemperatureAnalyzerFileImpl(File file) 
 	{
@@ -25,21 +22,36 @@ public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 	}
 	
 	@Override
-	public Temperature getTemperature()
+	public Temperature getAverageTemperature()
 	{
+		List<Float> temperaturesList = readTemperatures(LINES_TO_READ_DEFAULT);
 		
-		List<String> lines = new ArrayList<>();
-		
+		//build average
+		Float sum = temperaturesList.stream().reduce(0.0f, Float::sum);
+		return new TemperatureImpl(sum / temperaturesList.size());
+	}
+
+	@Override
+	public Temperature getLastTemperature() {
+		return new TemperatureImpl( readLastTemperature() );
+	}
+	
+	private float readLastTemperature(){
+		return readTemperatures(1).get(0).floatValue();
+	}
+	
+	private List<Float> readTemperatures(int linesToRead){
+		List<Float> lines = new ArrayList<>();
 		ReversedLinesFileReader reader = null;
 		try 
 		{
 			reader = new ReversedLinesFileReader(file);
-			for ( int lineCounter = 0; lineCounter < LINES_TO_READ; lineCounter++ ){
+			for ( int lineCounter = 0; lineCounter < linesToRead; lineCounter++ ){
 				String line = reader.readLine();
 				if ( line == null ){
 					break;
 				}
-				lines.add(line);
+				lines.add(Float.valueOf(line.split(" ")[1]));
 			}
 			
 		} 
@@ -47,17 +59,11 @@ public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 		{
 			e.printStackTrace();
 		}
-		finally{
+		finally
+		{
 			IOUtils.closeQuietly(reader);
 		}
-		
-		double[] temperatures = new double[lines.size()];
-		
-		for ( int i=0; i<lines.size(); i++){
-			temperatures[i] = Float.parseFloat(lines.get(i).split(" ")[1]);
-		}
-		
-		return new TemperatureImpl((float) mean.evaluate(temperatures));
+		return lines;
 	}
 
 }

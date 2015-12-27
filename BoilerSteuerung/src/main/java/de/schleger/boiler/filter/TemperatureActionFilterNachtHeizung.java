@@ -42,7 +42,7 @@ public class TemperatureActionFilterNachtHeizung implements TemperatureActionFil
 			return false;
 		}
 		
-		Temperature temperature = temperatureAnalyzer.getTemperature();
+		Temperature temperature = temperatureAnalyzer.getAverageTemperature();
 		Temperature targetTemperature = configProviderIn.getTargetTemperature();
 				
 		int timeInMinutes = heatTimeCalculator.calculate(temperature, targetTemperature, HeatPower.HEAT_POWER_3);

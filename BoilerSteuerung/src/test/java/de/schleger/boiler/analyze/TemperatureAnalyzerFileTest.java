@@ -26,12 +26,17 @@ public class TemperatureAnalyzerFileTest
 		temperaturProviderFileImpl = new TemperatureAnalyzerFileImpl(FILE);
 	}	
 	
-	// TODO Average bilden
 	@Test
-	public void readTemperatureFromFile() throws IOException
+	public void readAverageTemperatureFromFile() throws IOException
 	{	
 		Temperature temperatureImpl = new TemperatureImpl(27.003334f);
 		
-		assertThat(temperaturProviderFileImpl.getTemperature(), equalTo(temperatureImpl));
+		assertThat(temperaturProviderFileImpl.getAverageTemperature(), equalTo(temperatureImpl));
+	}
+	
+	@Test
+	public void readLastTemperatureFromFile(){
+		Temperature temperatureImpl = new TemperatureImpl(28.67f);
+		assertThat(temperaturProviderFileImpl.getLastTemperature(), equalTo(temperatureImpl));
 	}
 }

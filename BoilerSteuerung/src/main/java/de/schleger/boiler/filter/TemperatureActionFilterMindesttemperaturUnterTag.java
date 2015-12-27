@@ -27,7 +27,7 @@ public class TemperatureActionFilterMindesttemperaturUnterTag implements Tempera
 	public boolean filter() 
 	{
 		// TODO heizt noch nicht
-		if(!timeProvider.isNight() && MIN_TEMPERATURE.compareTo(analyzer.getTemperature()) > 0)
+		if(!timeProvider.isNight() && MIN_TEMPERATURE.compareTo(analyzer.getAverageTemperature()) > 0)
 		{
 			LOG.log(Level.INFO, "Mindesttemperatur unterschritten, erzeuge Target mit Temperatur: " + MIN_TEMPERATURE.getTemperature());
 			
