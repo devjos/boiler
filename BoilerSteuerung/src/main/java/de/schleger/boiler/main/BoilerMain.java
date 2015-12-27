@@ -15,6 +15,7 @@ import de.schleger.boiler.config.ConfigProviderInFileImpl;
 import de.schleger.boiler.config.ConfigProviderOut;
 import de.schleger.boiler.config.ConfigProviderOutFileImpl;
 import de.schleger.boiler.filter.TemperatureActionFilter;
+import de.schleger.boiler.filter.TemperatureActionFilterLegionellen;
 import de.schleger.boiler.filter.TemperatureActionFilterNachtHeizung;
 import de.schleger.boiler.heat.HeatTimeCalculator;
 import de.schleger.boiler.heat.HeatTimeCalulatorImpl;
@@ -46,6 +47,9 @@ public class BoilerMain
 				
 		List<TemperatureActionFilter> temperaturActionFilterList = new ArrayList<TemperatureActionFilter>();
 		temperaturActionFilterList.add(new TemperatureActionFilterNachtHeizung(
+						timeProviderImpl, configProviderFileImpl, temperatureAnalyzerFileImpl, 
+						heatProviderFileImpl, heatTimeCalulator));
+		temperaturActionFilterList.add(new TemperatureActionFilterLegionellen(
 						timeProviderImpl, configProviderFileImpl, temperatureAnalyzerFileImpl, 
 						heatProviderFileImpl, heatTimeCalulator));
 		

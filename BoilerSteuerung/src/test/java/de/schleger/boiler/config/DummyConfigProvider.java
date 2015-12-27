@@ -5,6 +5,7 @@ import de.schleger.boiler.temperature.Temperature;
 public class DummyConfigProvider implements ConfigProviderIn 
 {
 	private Temperature targetTemperature;
+	private Temperature legionellenTemp;
 
 	@Override
 	public Temperature getTargetTemperature() 
@@ -15,5 +16,14 @@ public class DummyConfigProvider implements ConfigProviderIn
 	public void setTargetTemperature(Temperature targetTemperature)
 	{
 		this.targetTemperature = targetTemperature;		
+	}
+
+	@Override
+	public Temperature getLegionellenTemperature() {
+		return this.legionellenTemp;
 	}	
+	
+	public void setLegionellenTemperature(Temperature temp){
+		this.legionellenTemp = temp;
+	}
 }

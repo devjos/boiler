@@ -48,4 +48,8 @@ public class DummyTimeProvider implements TimeProvider
 	{
 		this.nextNachtHezungEndTime = nextNachtHezungEndTime;
 	}
+	
+	public void setTime(LocalDateTime time){
+		this.time = time;
+	}
 }

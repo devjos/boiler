@@ -17,7 +17,8 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 {
 	private static final Logger LOG = LogManager.getLogger(ConfigProviderInFileImpl.class);
 
-	private static final float DEFAULT_VALUE = 39;
+	private static final float DEFAULT_VALUE_TARGET = 39;
+	private static final float DEFAULT_VALUE_LEGIONELLEN = 65;
 	
 	private File file;
 	private Properties prop;
@@ -30,13 +31,13 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 	@Override
 	public Temperature getTargetTemperature() 
 	{
-		float temperature = DEFAULT_VALUE;
+		float temperature = DEFAULT_VALUE_TARGET;
 		try{
 			readProperties();
 			temperature = Float.parseFloat(prop.getProperty(ConfigKeys.TARGET_TEMPERATURE.toString()));
 		}
 		catch ( Exception e){
-			LOG.error("Unable to get target temperature from config file, use default instead: " + DEFAULT_VALUE, e);
+			LOG.error("Unable to get target temperature from config file, use default instead: " + DEFAULT_VALUE_TARGET, e);
 		}
 		
 		return new TemperatureImpl(temperature);
@@ -57,5 +58,19 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 		{
 			IOUtils.closeQuietly(fileReader);
 		}
+	}
+
+	@Override
+	public Temperature getLegionellenTemperature() {
+		float temperature = DEFAULT_VALUE_LEGIONELLEN;
+		try{
+			readProperties();
+			temperature = Float.parseFloat(prop.getProperty(ConfigKeys.LEGIONELLEN_TEMPERATURE.toString()));
+		}
+		catch ( Exception e){
+			LOG.error("Unable to get legionellen temperature from config file, use default instead: " + DEFAULT_VALUE_LEGIONELLEN, e);
+		}
+		
+		return new TemperatureImpl(temperature);
 	}
 }
