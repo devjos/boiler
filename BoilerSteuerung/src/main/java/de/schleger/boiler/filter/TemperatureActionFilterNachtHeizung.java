@@ -1,6 +1,6 @@
 package de.schleger.boiler.filter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -56,12 +56,12 @@ public class TemperatureActionFilterNachtHeizung implements TemperatureActionFil
 			return false;
 		}
 		
-		Date calculatedEndTime = timeProvider.addMinutesToTime(timeInMinutes);
-		Date endTime = timeProvider.getNextNachtheizungEndTime();
+		LocalDateTime calculatedEndTime = timeProvider.addMinutesToTime(timeInMinutes);
+		LocalDateTime endTime = timeProvider.getNextNachtheizungEndTime();
 		
 		LOG.log(Level.DEBUG, "endTime:" + endTime + " calculatedEndTime:" + calculatedEndTime);
 		
-		if(calculatedEndTime.after(endTime))
+		if(calculatedEndTime.isAfter(endTime))
 		{
 			configProviderOut.setHeatPower(HeatPower.HEAT_POWER_3);
 			return true;

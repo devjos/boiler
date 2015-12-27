@@ -3,6 +3,7 @@ package de.schleger.boiler.filter;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -66,14 +67,9 @@ public class TemperatureActionFilterNachtHeizungTest
 	
 	@Test
 	public void waitsForHeatingEndTime()
-	{
-		Calendar cal = Calendar.getInstance();
-		
-		cal.set(2010, 8, 5, 21, 0);		
-		Date timecalculated = cal.getTime();
-		
-		cal.set(2010, 8, 5, 22, 0);		
-		Date endNachtheizung = cal.getTime();
+	{		
+		LocalDateTime timecalculated = LocalDateTime.of(2010, 8, 5, 21, 0);
+		LocalDateTime endNachtheizung = LocalDateTime.of(2010, 8, 5, 22, 0);
 		
 		dummyTimeProvider.setNight(true);
 		dummyHeatTimeCalculator.setTimetoHeat(60);
@@ -89,13 +85,8 @@ public class TemperatureActionFilterNachtHeizungTest
 	@Test
 	public void heatingEndTimeIsOver()
 	{
-		Calendar cal = Calendar.getInstance();
-		
-		cal.set(2010, 8, 5, 23, 0);		
-		Date timecalculated = cal.getTime();
-		
-		cal.set(2010, 8, 5, 22, 0);		
-		Date endNachtheizung = cal.getTime();
+		LocalDateTime timecalculated = LocalDateTime.of(2010, 8, 5, 23, 0);
+		LocalDateTime endNachtheizung = LocalDateTime.of(2010, 8, 5, 22, 0);
 		
 		dummyTimeProvider.setNight(true);
 		dummyHeatTimeCalculator.setTimetoHeat(60);

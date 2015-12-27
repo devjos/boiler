@@ -1,18 +1,15 @@
 package de.schleger.boiler.time;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.time.LocalDateTime;
 
 public class TimeProviderImpl implements TimeProvider 
 {
-	private Calendar cal = GregorianCalendar.getInstance(Locale.GERMANY);
+	private LocalDateTimeProvider dateTimeProvider = LocalDateTime::now;
 	
 	@Override
-	public Date getTime() 
+	public LocalDateTime getTime() 
 	{
-		return cal.getTime();
+		return dateTimeProvider.now();
 	}
 	
 	/**
@@ -21,50 +18,35 @@ public class TimeProviderImpl implements TimeProvider
 	@Override
 	public boolean isNight() 
 	{
-		int hour = cal.get(Calendar.HOUR_OF_DAY);
-		
-		if(21 < hour || 6 > hour)
-		{
-			return true;
-		}
-		
-		return false;
+		int hour = getTime().getHour();
+		return 21 < hour || 6 > hour;
 	}
 
 	@Override
-	public Date getNextNachtheizungEndTime() 
+	public LocalDateTime getNextNachtheizungEndTime() 
 	{
-		Date time = getTime();
 		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(time);
+		LocalDateTime time = getTime();
+		int dayOfMonth = time.getDayOfMonth();
 		
-		// Wenn größer 6 dann ist es der nächste Tag
-		if(cal.get(Calendar.HOUR_OF_DAY) >= 6)
+		// Wenn grÃ¶ÃŸer 6 dann ist es der nÃ¤chste Tag
+		if(time.getHour() >= 6)
 		{
-			cal.add(Calendar.DAY_OF_MONTH, 1);
+			dayOfMonth++;
 		}
 		
-		cal.set(Calendar.HOUR_OF_DAY, 6);
-		cal.set(Calendar.MINUTE, 0);		
-		cal.set(Calendar.SECOND, 0);		
-		cal.set(Calendar.MILLISECOND, 0);		
-		
-		return cal.getTime();
+		LocalDateTime dateTime = LocalDateTime.of(time.getYear(), time.getMonth(), dayOfMonth, 6, 0);
+		return dateTime;
 	}
 
 	@Override
-	public Date addMinutesToTime(int minutes) 
+	public LocalDateTime addMinutesToTime(int minutes) 
 	{		
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(getTime());
-		cal.add(Calendar.MINUTE, minutes);
-		
-		return cal.getTime();
+		return getTime().plusMinutes(minutes);
 	}
 	
-	public void setCalendar(Calendar cal)
+	public void setDateTimeProvider(LocalDateTimeProvider prov)
 	{
-		this.cal = cal;		
+		this.dateTimeProvider = prov;
 	}	
 }
