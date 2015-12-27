@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,14 +56,7 @@ public class ConfigProviderOutFileImpl implements ConfigProviderOut
 		}
 		finally
 		{
-			try 
-			{
-				fileOutputStream.close();
-			} 
-			catch (IOException e) 
-			{
-				LOG.log(Level.ERROR, "Es konnte die Datei nicht geschrieben werden", e);
-			}			
+			IOUtils.closeQuietly(fileOutputStream);			
 		}
 	}
 

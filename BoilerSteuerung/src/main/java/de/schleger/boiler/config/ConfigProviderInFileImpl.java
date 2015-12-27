@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,7 +36,7 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 	private void readProperties() 
 	{
 		prop = new Properties();		
-		FileReader fileReader;
+		FileReader fileReader = null;
 		
 		try 
 		{
@@ -46,6 +47,10 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 		catch (Exception e) 
 		{
 			LOG.log(Level.ERROR, "Es konnte die Config nicht gelesen werden", e);
-		}		
+		}
+		finally
+		{
+			IOUtils.closeQuietly(fileReader);
+		}
 	}
 }
