@@ -3,9 +3,6 @@ package de.schleger.boiler.time;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
 public class TimeProviderImpl implements TimeProvider 
 {
