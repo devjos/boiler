@@ -1,15 +1,15 @@
 package de.schleger.boiler.time;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public interface TimeProvider 
 {
 	public boolean isNight();
 	
-	public Date getTime();
+	public LocalDateTime getTime();
 	
-	public Date getNextNachtheizungEndTime();
+	public LocalDateTime getNextNachtheizungEndTime();
 
-	public Date addMinutesToTime(int minutes);
+	public LocalDateTime addMinutesToTime(int minutes);
 }
 

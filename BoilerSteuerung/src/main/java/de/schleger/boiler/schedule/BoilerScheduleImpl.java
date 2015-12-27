@@ -30,7 +30,7 @@ public class BoilerScheduleImpl implements BoilerSchedule
 		{
 			if(!activeFilter.filter()) 
 			{
-				// Wenn Filter fertig alles zurückdrehen
+				// Wenn Filter fertig alles zurï¿½ckdrehen
 				isFilterInAction = false;
 				activeFilter = null;
 			}

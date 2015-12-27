@@ -1,13 +1,13 @@
 package de.schleger.boiler.time;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class DummyTimeProvider implements TimeProvider
 {
 	private boolean isNight;
-	private Date nextNachtHezungEndTime;
-	private Date time;
-	private Date dateAddMinutesToTime;
+	private LocalDateTime nextNachtHezungEndTime;
+	private LocalDateTime time;
+	private LocalDateTime dateAddMinutesToTime;
 
 
 
@@ -23,28 +23,28 @@ public class DummyTimeProvider implements TimeProvider
 	}
 
 	@Override
-	public Date getTime() 
+	public LocalDateTime getTime() 
 	{
 		return time;
 	}
 
 	@Override
-	public Date getNextNachtheizungEndTime() 
+	public LocalDateTime getNextNachtheizungEndTime() 
 	{
 		return nextNachtHezungEndTime;
 	}
 
 	@Override
-	public Date addMinutesToTime(int minutes) 
+	public LocalDateTime addMinutesToTime(int minutes) 
 	{
 		return dateAddMinutesToTime;
 	}
 
-	public void setDateAddMinutesToTime(Date dateAddMinutesToTime) {
+	public void setDateAddMinutesToTime(LocalDateTime dateAddMinutesToTime) {
 		this.dateAddMinutesToTime = dateAddMinutesToTime;
 	}
 	
-	public void setNextNachtHezungEndTime(Date nextNachtHezungEndTime) 
+	public void setNextNachtHezungEndTime(LocalDateTime nextNachtHezungEndTime) 
 	{
 		this.nextNachtHezungEndTime = nextNachtHezungEndTime;
 	}

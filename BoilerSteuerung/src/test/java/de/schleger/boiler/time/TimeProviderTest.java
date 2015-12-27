@@ -3,6 +3,7 @@ package de.schleger.boiler.time;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -13,60 +14,58 @@ public class TimeProviderTest
 {
 
 	private TimeProviderImpl timeProvider;
-	private Calendar cal;
 
 	@Before
 	public void setUp()
 	{
-		cal = GregorianCalendar.getInstance();
 		timeProvider = new TimeProviderImpl();
-		timeProvider.setCalendar(cal);
+		timeProvider.setDateTimeProvider(LocalDateTime::now);
 	}	
 	
 	@Test
 	public void isNight()
 	{	
-		cal.set(2010, 8, 5, 22, 0);		
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 5, 22, 0) );
 		assertThat(timeProvider.isNight(), equalTo(true));
 		
-		cal.set(2010, 8, 5, 5, 59);		
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 5, 5, 59) );		
 		assertThat(timeProvider.isNight(), equalTo(true));
 	}
 	
 	@Test
 	public void isDay()
 	{	
-		cal.set(2010, 8, 5, 21, 59);		
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 5, 21, 59) );
 		assertThat(timeProvider.isNight(), equalTo(false));
 		
-		cal.set(2010, 8, 5, 6, 0);		
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 5, 6, 0) );
 		assertThat(timeProvider.isNight(), equalTo(false));
 	}
 	
 	@Test
 	public void getBackTime()
 	{	
-		cal.set(2010, 8, 5, 21, 59, 59);		
-		assertThat(timeProvider.getTime().toString(), equalTo("Sun Sep 05 21:59:59 CEST 2010"));
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 5, 21, 59, 59) );
+		assertThat(timeProvider.getTime().toString(), equalTo("2010-08-05T21:59:59"));
 	}
 	
 	@Test
 	public void canAddMinutesToTime()
 	{	
-		cal.set(2010, 8, 5, 21, 59, 59);		
-		assertThat(timeProvider.addMinutesToTime(131).toString(), equalTo("Mon Sep 06 00:10:59 CEST 2010"));
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 5, 21, 59, 59) );
+		assertThat(timeProvider.addMinutesToTime(131).toString(), equalTo("2010-08-06T00:10:59"));
 		
-		cal.set(2015, 8, 10, 6, 21, 40);		
-		assertThat(timeProvider.addMinutesToTime(131).toString(), equalTo("Thu Sep 10 08:32:40 CEST 2015"));
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 10, 6, 21, 40) );
+		assertThat(timeProvider.addMinutesToTime(131).toString(), equalTo("2010-08-10T08:32:40"));
 	}
 	
 	@Test
 	public void canCalcNextNachtzeizungEnd()
 	{	
-		cal.set(2010, 8, 5, 21, 59, 59);		
-		assertThat(timeProvider.getNextNachtheizungEndTime().toString(), equalTo("Mon Sep 06 06:00:00 CEST 2010"));
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 5, 21, 59, 59) );
+		assertThat(timeProvider.getNextNachtheizungEndTime().toString(), equalTo("2010-08-06T06:00"));
 		
-		cal.set(2015, 8, 10, 6, 21, 40);
-		assertThat(timeProvider.getNextNachtheizungEndTime().toString(), equalTo("Fri Sep 11 06:00:00 CEST 2015"));
+		timeProvider.setDateTimeProvider( () -> LocalDateTime.of(2010, 8, 10, 6, 21, 40) );
+		assertThat(timeProvider.getNextNachtheizungEndTime().toString(), equalTo("2010-08-11T06:00"));
 	}
 }
