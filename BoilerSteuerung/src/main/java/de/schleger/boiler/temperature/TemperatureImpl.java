@@ -2,7 +2,7 @@ package de.schleger.boiler.temperature;
 
 public class TemperatureImpl implements Temperature 
 {
-	private Float temperature;
+	private final Float temperature;
 
 	public TemperatureImpl(Float temperature)
 	{
@@ -32,5 +32,10 @@ public class TemperatureImpl implements Temperature
 		}
 		
 		return super.equals(obj);
+	}
+	
+	@Override
+	public String toString(){
+		return temperature.toString();
 	}
 }

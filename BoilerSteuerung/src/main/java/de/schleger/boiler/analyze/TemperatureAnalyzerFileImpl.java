@@ -2,17 +2,21 @@ package de.schleger.boiler.analyze;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.ReversedLinesFileReader;
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
 
 import de.schleger.boiler.temperature.Temperature;
 import de.schleger.boiler.temperature.TemperatureImpl;
 
 public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 {
-	private File file;
+	private static final int LINES_TO_READ = 5;
+	private final File file;
+	private static final Mean mean = new Mean();
 
 
 	public TemperatureAnalyzerFileImpl(File file) 
@@ -23,20 +27,37 @@ public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 	@Override
 	public Temperature getTemperature()
 	{
+		
 		List<String> lines = new ArrayList<>();
 		
+		ReversedLinesFileReader reader = null;
 		try 
 		{
-			lines = Files.readAllLines(file.toPath(),Charset.forName("UTF-8"));
+			reader = new ReversedLinesFileReader(file);
+			for ( int lineCounter = 0; lineCounter < LINES_TO_READ; lineCounter++ ){
+				String line = reader.readLine();
+				if ( line == null ){
+					break;
+				}
+				lines.add(line);
+			}
+			
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
 		}
-
-		String[] split = lines.get(lines.size()-1).split(" ");
+		finally{
+			IOUtils.closeQuietly(reader);
+		}
 		
-		return new TemperatureImpl(Float.valueOf(split[1]));
+		double[] temperatures = new double[lines.size()];
+		
+		for ( int i=0; i<lines.size(); i++){
+			temperatures[i] = Float.parseFloat(lines.get(i).split(" ")[1]);
+		}
+		
+		return new TemperatureImpl((float) mean.evaluate(temperatures));
 	}
 
 }

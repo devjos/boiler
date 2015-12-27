@@ -30,7 +30,7 @@ public class TemperatureAnalyzerFileTest
 	@Test
 	public void readTemperatureFromFile() throws IOException
 	{	
-		Temperature temperatureImpl = new TemperatureImpl(28.67f);
+		Temperature temperatureImpl = new TemperatureImpl(27.003334f);
 		
 		assertThat(temperaturProviderFileImpl.getTemperature(), equalTo(temperatureImpl));
 	}
