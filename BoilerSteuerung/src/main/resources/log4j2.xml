@@ -5,9 +5,13 @@ status="WARN">
     <Console name="Console" target="SYSTEM_OUT">
         <PatternLayout pattern="%d{ISO8601} [%t] %-5level %logger{36} - %msg%n"/>
     </Console>
-    <File name="File" fileName="/var/log/boiler/boiler.log">
+    <RollingFile name="File" fileName="/var/log/boiler/boiler.log" filePattern="/var/log/boiler/boiler.log.%d{yyyy-MM-dd}" >
 		<PatternLayout pattern="%d{ISO8601} [%t] %-5level %logger{36} - %msg%n"/>
-    </File>
+		<Policies>
+			<TimeBasedTriggeringPolicy />
+		</Policies>
+		<DefaultRolloverStrategy max="4"/>
+	</RollingFile>
 </Appenders>
 <Loggers>
     <Logger name="log4j.test.Log4jTest" level="trace">
