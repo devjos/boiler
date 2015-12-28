@@ -12,10 +12,20 @@ status="WARN">
 		</Policies>
 		<DefaultRolloverStrategy max="4"/>
 	</RollingFile>
+	<RollingFile name="powerFile" fileName="/var/log/boiler/power.log" filePattern="/var/log/boiler/power.log.%d{yyyy-MM-dd}" >
+		<PatternLayout pattern="%d{ISO8601} %msg%n"/>
+		<Policies>
+			<TimeBasedTriggeringPolicy />
+		</Policies>
+		<DefaultRolloverStrategy max="30"/>
+	</RollingFile>
 </Appenders>
 <Loggers>
     <Logger name="log4j.test.Log4jTest" level="trace">
         <AppenderRef ref="Console"/>
+    </Logger>
+     <Logger name="de.schleger.boiler.boiler.BoilerControllerGPIOImpl">
+        <appender-ref ref="powerFile"/>
     </Logger>
     <Root level="trace">
         <AppenderRef ref="Console"/>

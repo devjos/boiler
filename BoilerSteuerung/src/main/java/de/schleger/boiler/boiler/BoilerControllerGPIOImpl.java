@@ -1,5 +1,8 @@
 package de.schleger.boiler.boiler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
@@ -10,8 +13,10 @@ import de.schleger.boiler.config.HeatPower;
 
 public class BoilerControllerGPIOImpl implements BoilerController 
 {
-	private GpioPinDigitalOutput pin2kw;
-	private GpioPinDigitalOutput pin4kw;
+	private static final Logger LOG = LogManager.getLogger(BoilerControllerGPIOImpl.class);
+	
+	private final GpioPinDigitalOutput pin2kw;
+	private final GpioPinDigitalOutput pin4kw;
 
 	public BoilerControllerGPIOImpl() 
 	{
@@ -29,7 +34,7 @@ public class BoilerControllerGPIOImpl implements BoilerController
 	@Override
 	public void setHeatPower(HeatPower heatPower) 
 	{
-		// TODO logging
+		LOG.info("GPIO HEAT_LEVEL=" + heatPower.toString());
 		
 		switch (heatPower) 
 		{
