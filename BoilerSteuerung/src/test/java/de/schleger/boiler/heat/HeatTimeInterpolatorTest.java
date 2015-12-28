@@ -37,10 +37,10 @@ public class HeatTimeInterpolatorTest
 	@Test
 	public void canInterplolateHeizstufe3()
 	{		
-		assertThat(heatTimeInterpolator.interpolateTimeToHeat(2.5f, HeatPower.HEAT_POWER_3), equalTo(97.363F));
-		assertThat(heatTimeInterpolator.interpolateTimeToHeat(6.0f, HeatPower.HEAT_POWER_3), equalTo(142.30965F));
-		assertThat(heatTimeInterpolator.interpolateTimeToHeat(17.2f, HeatPower.HEAT_POWER_3), equalTo(169.5184F));
-		assertThat(heatTimeInterpolator.interpolateTimeToHeat(26.81f, HeatPower.HEAT_POWER_3), equalTo(222.69943F));
+		assertThat(heatTimeInterpolator.interpolateTimeToHeat(2.5f, HeatPower.HEAT_POWER_3), equalTo(97.024704F));
+		assertThat(heatTimeInterpolator.interpolateTimeToHeat(6.0f, HeatPower.HEAT_POWER_3), equalTo(137.54655F));
+		assertThat(heatTimeInterpolator.interpolateTimeToHeat(17.2f, HeatPower.HEAT_POWER_3), equalTo(172.43037F));
+		assertThat(heatTimeInterpolator.interpolateTimeToHeat(26.81f, HeatPower.HEAT_POWER_3), equalTo(229.78986F));
 	}
 
 }
