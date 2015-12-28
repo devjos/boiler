@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
@@ -16,12 +17,10 @@ import de.schleger.boiler.temperature.TemperatureImpl;
 public class ConfigProviderInFileImpl implements ConfigProviderIn 
 {
 	private static final Logger LOG = LogManager.getLogger(ConfigProviderInFileImpl.class);
-
-	private static final float DEFAULT_VALUE_TARGET = 39;
-	private static final float DEFAULT_VALUE_LEGIONELLEN = 65;
 	
-	private File file;
-	private Properties prop;
+	private final File file;
+	
+	private final HashMap<ConfigKeyIn, TemperatureImpl> config = new HashMap<>();
 
 	public ConfigProviderInFileImpl(File file) 
 	{
@@ -31,21 +30,12 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 	@Override
 	public Temperature getTargetTemperature() 
 	{
-		float temperature = DEFAULT_VALUE_TARGET;
-		try{
-			readProperties();
-			temperature = Float.parseFloat(prop.getProperty(ConfigKeys.TARGET_TEMPERATURE.toString()));
-		}
-		catch ( Exception e){
-			LOG.error("Unable to get target temperature from config file, use default instead: " + DEFAULT_VALUE_TARGET, e);
-		}
-		
-		return new TemperatureImpl(temperature);
+		return config.get(ConfigKeyIn.TARGET_TEMPERATURE);
 	}
 
-	private void readProperties() throws IOException 
+	private Properties readProperties() throws IOException 
 	{
-		prop = new Properties();		
+		Properties prop = new Properties();		
 		FileReader fileReader = null;
 		
 		try 
@@ -58,19 +48,34 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 		{
 			IOUtils.closeQuietly(fileReader);
 		}
+		return prop;
 	}
 
 	@Override
 	public Temperature getLegionellenTemperature() {
-		float temperature = DEFAULT_VALUE_LEGIONELLEN;
+		return config.get(ConfigKeyIn.LEGIONELLEN_TEMPERATURE);
+	}
+
+	@Override
+	public void updateInformation() {
+		insertDefaultValues();
 		try{
-			readProperties();
-			temperature = Float.parseFloat(prop.getProperty(ConfigKeys.LEGIONELLEN_TEMPERATURE.toString()));
+			Properties prop = readProperties();
+			for ( ConfigKeyIn key : ConfigKeyIn.values() ){
+				try{
+					config.put(key, new TemperatureImpl(Float.parseFloat(prop.getProperty(key.toString()))));
+				}catch( Exception e){
+					LOG.info("Cannot convert config key " + key);
+				}
+			}
+		} catch( Exception e){
+			LOG.error("Unable to read config file", e);
 		}
-		catch ( Exception e){
-			LOG.error("Unable to get legionellen temperature from config file, use default instead: " + DEFAULT_VALUE_LEGIONELLEN, e);
+	}
+	
+	private void insertDefaultValues() {
+		for ( ConfigKeyIn key : ConfigKeyIn.values() ){
+			config.put(key, new TemperatureImpl(ConfigKeyIn.getDefault(key)));
 		}
-		
-		return new TemperatureImpl(temperature);
 	}
 }

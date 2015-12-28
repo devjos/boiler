@@ -4,8 +4,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +14,6 @@ import de.schleger.boiler.config.DummyConfigProviderOut;
 import de.schleger.boiler.config.HeatPower;
 import de.schleger.boiler.heat.DummyHeatTimeCalculator;
 import de.schleger.boiler.temperature.TemperatureImpl;
-import de.schleger.boiler.time.DummyTimeProvider;
 import de.schleger.boiler.time.TimeProviderImpl;
 
 public class TemperatureActionFilterLegionellenTest 

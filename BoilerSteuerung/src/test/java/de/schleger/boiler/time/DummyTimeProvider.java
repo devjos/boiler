@@ -52,4 +52,10 @@ public class DummyTimeProvider implements TimeProvider
 	public void setTime(LocalDateTime time){
 		this.time = time;
 	}
+
+	@Override
+	public void updateInformation() {
+		// TODO Auto-generated method stub
+		
+	}
 }

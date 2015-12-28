@@ -14,7 +14,9 @@ import de.schleger.boiler.temperature.TemperatureImpl;
 public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 {
 	private static final int LINES_TO_READ_DEFAULT = 5;
-	private final File file;
+	
+	private final File file;	
+	private final List<Float> temperaturesList = new ArrayList<>();
 
 	public TemperatureAnalyzerFileImpl(File file) 
 	{
@@ -24,24 +26,17 @@ public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 	@Override
 	public Temperature getAverageTemperature()
 	{
-		List<Float> temperaturesList = readTemperatures(LINES_TO_READ_DEFAULT);
-		
-		//build average
 		Float sum = temperaturesList.stream().reduce(0.0f, Float::sum);
 		return new TemperatureImpl(sum / temperaturesList.size());
 	}
 
 	@Override
 	public Temperature getLastTemperature() {
-		return new TemperatureImpl( readLastTemperature() );
+		return new TemperatureImpl( temperaturesList.get(0) );
 	}
 	
-	private float readLastTemperature(){
-		return readTemperatures(1).get(0).floatValue();
-	}
-	
-	private List<Float> readTemperatures(int linesToRead){
-		List<Float> lines = new ArrayList<>();
+	private void readTemperatures(int linesToRead){
+		temperaturesList.clear();
 		ReversedLinesFileReader reader = null;
 		try 
 		{
@@ -51,7 +46,7 @@ public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 				if ( line == null ){
 					break;
 				}
-				lines.add(Float.valueOf(line.split(" ")[1]));
+				temperaturesList.add(Float.valueOf(line.split(" ")[1]));
 			}
 			
 		} 
@@ -63,7 +58,11 @@ public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 		{
 			IOUtils.closeQuietly(reader);
 		}
-		return lines;
+	}
+
+	@Override
+	public void updateInformation() {
+		readTemperatures(LINES_TO_READ_DEFAULT);
 	}
 
 }

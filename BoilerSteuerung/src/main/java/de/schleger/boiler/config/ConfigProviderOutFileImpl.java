@@ -39,7 +39,7 @@ public class ConfigProviderOutFileImpl implements ConfigProviderOut
 		boilerController.setHeatPower(heatPower);		
 		
 		Properties prop = new Properties();
-		prop.setProperty(ConfigKeys.HEAT_LEVEL.toString(), heatPower.toString());
+		prop.setProperty(ConfigKeyOut.HEAT_LEVEL.toString(), heatPower.toString());
 		
 		LOG.log(Level.INFO, prop.entrySet());
 		

@@ -2,53 +2,45 @@ package de.schleger.boiler.schedule;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.schleger.boiler.filter.TemperatureActionFilter;
+import de.schleger.boiler.information.InformationProvider;
 
 public class BoilerScheduleImpl implements BoilerSchedule
 {	
-	private static final Logger LOG = LogManager.getLogger(BoilerScheduleImpl.class);
+	//private static final Logger LOG = LogManager.getLogger(BoilerScheduleImpl.class);
 
-	private List<TemperatureActionFilter> actionFilterList;
+	private final List<TemperatureActionFilter> actionFilterList;
+	private final List<InformationProvider> informationProviderList;
 	
 	private TemperatureActionFilter activeFilter;	
-	private boolean isFilterInAction;
 
-	
-	public BoilerScheduleImpl(List<TemperatureActionFilter> actionFilterList) 
+	public BoilerScheduleImpl(List<TemperatureActionFilter> actionFilterList, List<InformationProvider> informationProviderList) 
 	{
 		this.actionFilterList = actionFilterList;
+		this.informationProviderList = informationProviderList;
 	}
 
 	@Override
 	public void analyse() 
 	{
+		informationProviderList.forEach( prov -> prov.updateInformation() );
+		
 		// Target abarbeiten
-		if(isFilterInAction)
+		if(activeFilter != null)
 		{
 			if(!activeFilter.filter()) 
 			{
-				// Wenn Filter fertig alles zur�ckdrehen
-				isFilterInAction = false;
+				// Wenn Filter fertig alles zurückdrehen
 				activeFilter = null;
 			}
 		}
 		// Neues Target ermitteln
 		else
 		{
-			for (TemperatureActionFilter temperaturTargetFilter : actionFilterList) 
-			{
-				boolean localIsFilterInAction = temperaturTargetFilter.filter();
-				
-				if(localIsFilterInAction)
-				{					
-					activeFilter = temperaturTargetFilter;
-					isFilterInAction = true;
-					return;				
-				}
-			}
+			actionFilterList.stream()
+				.filter( actionFilter -> actionFilter.filter() )
+				.findFirst()
+				.ifPresent( actionFilter -> activeFilter = actionFilter );
 		}		
 	}
 }

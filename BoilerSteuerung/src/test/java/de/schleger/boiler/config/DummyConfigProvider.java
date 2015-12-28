@@ -26,4 +26,10 @@ public class DummyConfigProvider implements ConfigProviderIn
 	public void setLegionellenTemperature(Temperature temp){
 		this.legionellenTemp = temp;
 	}
+
+	@Override
+	public void updateInformation() {
+		// TODO Auto-generated method stub
+		
+	}
 }

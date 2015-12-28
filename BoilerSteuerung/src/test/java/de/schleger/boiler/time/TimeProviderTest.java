@@ -4,8 +4,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +17,6 @@ public class TimeProviderTest
 	public void setUp()
 	{
 		timeProvider = new TimeProviderImpl();
-		timeProvider.setDateTimeProvider(LocalDateTime::now);
 	}	
 	
 	@Test

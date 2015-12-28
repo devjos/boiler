@@ -5,11 +5,12 @@ import java.time.LocalDateTime;
 public class TimeProviderImpl implements TimeProvider 
 {
 	private LocalDateTimeProvider dateTimeProvider = LocalDateTime::now;
+	private LocalDateTime dateTime;
 	
 	@Override
 	public LocalDateTime getTime() 
 	{
-		return dateTimeProvider.now();
+		return dateTime;
 	}
 	
 	/**
@@ -48,5 +49,11 @@ public class TimeProviderImpl implements TimeProvider
 	public void setDateTimeProvider(LocalDateTimeProvider prov)
 	{
 		this.dateTimeProvider = prov;
+		updateInformation();
+	}
+
+	@Override
+	public void updateInformation() {
+		dateTime = dateTimeProvider.now();
 	}	
 }

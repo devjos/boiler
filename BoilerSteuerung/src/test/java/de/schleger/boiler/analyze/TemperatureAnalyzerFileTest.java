@@ -24,6 +24,7 @@ public class TemperatureAnalyzerFileTest
 	public void setUp()
 	{
 		temperaturProviderFileImpl = new TemperatureAnalyzerFileImpl(FILE);
+		temperaturProviderFileImpl.updateInformation();
 	}	
 	
 	@Test

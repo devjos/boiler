@@ -11,18 +11,22 @@ import org.junit.Test;
 
 import de.schleger.boiler.filter.DummyTemperatureActionFilter;
 import de.schleger.boiler.filter.TemperatureActionFilter;
+import de.schleger.boiler.information.DummyInformationProvider;
+import de.schleger.boiler.information.InformationProvider;
 import de.schleger.boiler.schedule.BoilerScheduleImpl;
 
 public class BoilerScheduleTest 
 {
 	private BoilerScheduleImpl boilerLogicImpl;
 	private List<TemperatureActionFilter> actionFilterList;
+	private List<InformationProvider> infoProviderList;
 	
 	@Before
 	public void setUp()
 	{
 		actionFilterList = new ArrayList<TemperatureActionFilter>();
-		boilerLogicImpl = new BoilerScheduleImpl(actionFilterList);
+		infoProviderList = new ArrayList<InformationProvider>();
+		boilerLogicImpl = new BoilerScheduleImpl(actionFilterList, infoProviderList);
 	}
 	
 	@Test
@@ -35,6 +39,18 @@ public class BoilerScheduleTest
 		
 		assertThat(((DummyTemperatureActionFilter)(actionFilterList.get(0))).isFiltered(), equalTo(true));
 		assertThat(((DummyTemperatureActionFilter)(actionFilterList.get(1))).isFiltered(), equalTo(true));
+	}
+	
+	@Test
+	public void pruefeAlleInformationProvider()
+	{
+		infoProviderList.add(new DummyInformationProvider());
+		infoProviderList.add(new DummyInformationProvider());
+		
+		boilerLogicImpl.analyse();
+		
+		assertThat(((DummyInformationProvider)(infoProviderList.get(0))).isUpdated(), equalTo(true));
+		assertThat(((DummyInformationProvider)(infoProviderList.get(1))).isUpdated(), equalTo(true));
 	}
 
 	

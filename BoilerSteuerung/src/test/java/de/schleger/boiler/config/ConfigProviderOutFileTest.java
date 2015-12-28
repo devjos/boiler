@@ -39,7 +39,7 @@ public class ConfigProviderOutFileTest
 		Properties prop = new Properties();
 		prop.load(reader);
 		
-		assertThat(prop.getProperty(ConfigKeys.HEAT_LEVEL.toString()), equalTo(HeatPower.HEAT_POWER_3.toString()));
+		assertThat(prop.getProperty(ConfigKeyOut.HEAT_LEVEL.toString()), equalTo(HeatPower.HEAT_POWER_3.toString()));
 		assertThat(dummyBoilerController.getHeatPower().toString(), equalTo(HeatPower.HEAT_POWER_3.toString()));
 		
 		reader.close();
@@ -56,7 +56,7 @@ public class ConfigProviderOutFileTest
 		Properties prop = new Properties();
 		prop.load(reader);
 		
-		assertThat(prop.getProperty(ConfigKeys.HEAT_LEVEL.toString()), equalTo(HeatPower.HEAT_POWER_0.toString()));
+		assertThat(prop.getProperty(ConfigKeyOut.HEAT_LEVEL.toString()), equalTo(HeatPower.HEAT_POWER_0.toString()));
 		assertThat(dummyBoilerController.getHeatPower().toString(), equalTo(HeatPower.HEAT_POWER_0.toString()));
 		
 		reader.close();

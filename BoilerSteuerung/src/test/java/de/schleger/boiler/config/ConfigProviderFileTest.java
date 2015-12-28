@@ -24,6 +24,7 @@ public class ConfigProviderFileTest
 	public void setUp()
 	{
 		configProviderFileImpl = new ConfigProviderInFileImpl(FILE_IN);
+		configProviderFileImpl.updateInformation();
 	}	
 	
 	@Test
@@ -38,6 +39,7 @@ public class ConfigProviderFileTest
 	public void useDefaultValueIfFileIsNotPresent() throws IOException
 	{	
 		configProviderFileImpl = new ConfigProviderInFileImpl(new File("123xyz"));
+		configProviderFileImpl.updateInformation();
 		Temperature temperatureImpl = new TemperatureImpl(39.00f);
 		
 		assertThat(configProviderFileImpl.getTargetTemperature(), equalTo(temperatureImpl));

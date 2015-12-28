@@ -20,6 +20,7 @@ import de.schleger.boiler.filter.TemperatureActionFilterNachtHeizung;
 import de.schleger.boiler.heat.HeatTimeCalculator;
 import de.schleger.boiler.heat.HeatTimeCalulatorImpl;
 import de.schleger.boiler.heat.HeatTimeInterpolatorImpl;
+import de.schleger.boiler.information.InformationProvider;
 import de.schleger.boiler.schedule.BoilerScheduleImpl;
 import de.schleger.boiler.task.BoilerTaskImpl;
 import de.schleger.boiler.time.TimeProvider;
@@ -53,7 +54,12 @@ public class BoilerMain
 						timeProviderImpl, configProviderFileImpl, temperatureAnalyzerFileImpl, 
 						heatProviderFileImpl, heatTimeCalulator));
 		
-	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList));
+		List<InformationProvider> informationProviderList = new ArrayList<>();
+		informationProviderList.add(timeProviderImpl);
+		informationProviderList.add(configProviderFileImpl);
+		informationProviderList.add(temperatureAnalyzerFileImpl);
+		
+	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));
 	    
 	    Timer timer = new Timer();
 	    timer.schedule(boilerTaskImpl, 1000l, 30000l);

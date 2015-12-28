@@ -22,4 +22,10 @@ public class DummyTemperatureAnalyzer implements TemperatureAnalyzer {
 	public Temperature getLastTemperature() {
 		return t;
 	}
+
+	@Override
+	public void updateInformation() {
+		// TODO Auto-generated method stub
+		
+	}
 }

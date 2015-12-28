@@ -2,7 +2,9 @@ package de.schleger.boiler.time;
 
 import java.time.LocalDateTime;
 
-public interface TimeProvider 
+import de.schleger.boiler.information.InformationProvider;
+
+public interface TimeProvider extends InformationProvider
 {
 	public boolean isNight();
 	
