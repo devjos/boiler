@@ -23,22 +23,47 @@ public class TimeProviderImpl implements TimeProvider
 		return 21 < hour || 6 > hour;
 	}
 
+	/**
+	 * Ist immer das nächste 6 Uhr morgens
+	 */
 	@Override
 	public LocalDateTime getNextNachtheizungEndTime() 
-	{
-		
+	{		
 		LocalDateTime time = getTime();
-		int dayOfMonth = time.getDayOfMonth();
 		
 		// Wenn größer 6 dann ist es der nächste Tag
 		if(time.getHour() >= 6)
 		{
-			dayOfMonth++;
-		}
+			time = time.plusDays(1);
+		} 
 		
-		LocalDateTime dateTime = LocalDateTime.of(time.getYear(), time.getMonth(), dayOfMonth, 6, 0);
+		LocalDateTime dateTime = LocalDateTime.of(time.getYear(), time.getMonth(), time.getDayOfMonth(), 6, 0);
+		
 		return dateTime;
 	}
+	
+	/**
+	 * Der erste Tag des nächsten Monats 6 Uhr morgens
+	 */
+	@Override
+	public LocalDateTime getNextLegionellenEndTime() 
+	{
+		LocalDateTime time = getTime();
+		
+		// Wenn größer 6 dann ist es der nächste Tag
+		if(time.getDayOfMonth() >= 2)
+		{
+			time = time.plusMonths(1);
+		}
+		else if(time.getHour() >= 6)
+		{
+			time = time.plusMonths(1);
+		}
+		
+		LocalDateTime dateTime = LocalDateTime.of(time.getYear(), time.getMonth(), 1, 6, 0);
+		
+		return dateTime;
+	}	
 
 	@Override
 	public LocalDateTime addMinutesToTime(int minutes) 
@@ -49,11 +74,13 @@ public class TimeProviderImpl implements TimeProvider
 	public void setDateTimeProvider(LocalDateTimeProvider prov)
 	{
 		this.dateTimeProvider = prov;
-		updateInformation();
+		update();
 	}
 
 	@Override
-	public void updateInformation() {
+	public void update() {
 		dateTime = dateTimeProvider.now();
-	}	
+	}
+
+
 }

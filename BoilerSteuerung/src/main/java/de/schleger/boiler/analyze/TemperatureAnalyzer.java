@@ -1,9 +1,9 @@
 package de.schleger.boiler.analyze;
 
-import de.schleger.boiler.information.InformationProvider;
+import de.schleger.boiler.information.InformationUpdater;
 import de.schleger.boiler.temperature.Temperature;
 
-public interface TemperatureAnalyzer extends InformationProvider
+public interface TemperatureAnalyzer extends InformationUpdater
 {	
 	public Temperature getLastTemperature();
 	

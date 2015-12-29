@@ -12,20 +12,20 @@ import org.junit.Test;
 import de.schleger.boiler.filter.DummyTemperatureActionFilter;
 import de.schleger.boiler.filter.TemperatureActionFilter;
 import de.schleger.boiler.information.DummyInformationProvider;
-import de.schleger.boiler.information.InformationProvider;
+import de.schleger.boiler.information.InformationUpdater;
 import de.schleger.boiler.schedule.BoilerScheduleImpl;
 
 public class BoilerScheduleTest 
 {
 	private BoilerScheduleImpl boilerLogicImpl;
 	private List<TemperatureActionFilter> actionFilterList;
-	private List<InformationProvider> infoProviderList;
+	private List<InformationUpdater> infoProviderList;
 	
 	@Before
 	public void setUp()
 	{
 		actionFilterList = new ArrayList<TemperatureActionFilter>();
-		infoProviderList = new ArrayList<InformationProvider>();
+		infoProviderList = new ArrayList<InformationUpdater>();
 		boilerLogicImpl = new BoilerScheduleImpl(actionFilterList, infoProviderList);
 	}
 	

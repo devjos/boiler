@@ -26,7 +26,7 @@ public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 	@Override
 	public Temperature getAverageTemperature()
 	{
-		Float sum = temperaturesList.stream().reduce(0.0f, Float::sum);
+		Float sum = temperaturesList.stream().reduce(0.0f, (a, b) -> Float.sum(a, b));
 		return new TemperatureImpl(sum / temperaturesList.size());
 	}
 
@@ -61,8 +61,8 @@ public class TemperatureAnalyzerFileImpl implements TemperatureAnalyzer
 	}
 
 	@Override
-	public void updateInformation() {
+	public void update() 
+	{
 		readTemperatures(LINES_TO_READ_DEFAULT);
 	}
-
 }

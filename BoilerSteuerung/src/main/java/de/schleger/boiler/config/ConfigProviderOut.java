@@ -2,7 +2,11 @@ package de.schleger.boiler.config;
 
 public interface ConfigProviderOut 
 {
-	void setHeatPower(HeatPower heatPower);
+	public void setHeatPower(HeatPower heatPower);
 	
-	HeatPower isHeating();
+	public HeatPower isHeating();
+	
+	public void setFillLevel(int fillLevel);
+	
+	public int getFillLevel();
 }

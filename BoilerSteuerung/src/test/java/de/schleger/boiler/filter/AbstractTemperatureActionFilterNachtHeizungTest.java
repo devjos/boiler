@@ -9,33 +9,36 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.schleger.boiler.analyze.DummyTemperatureAnalyzer;
-import de.schleger.boiler.config.DummyConfigProvider;
+import de.schleger.boiler.analyze.TemperatureAnalyzer;
+import de.schleger.boiler.config.ConfigProviderOut;
 import de.schleger.boiler.config.DummyConfigProviderOut;
 import de.schleger.boiler.config.HeatPower;
 import de.schleger.boiler.heat.DummyHeatTimeCalculator;
+import de.schleger.boiler.heat.HeatTimeCalculator;
+import de.schleger.boiler.temperature.Temperature;
 import de.schleger.boiler.temperature.TemperatureImpl;
 import de.schleger.boiler.time.DummyTimeProvider;
+import de.schleger.boiler.time.TimeProvider;
 
-public class TemperatureActionFilterNachtHeizungTest 
+public class AbstractTemperatureActionFilterNachtHeizungTest 
 {
+
+
 	private DummyTimeProvider dummyTimeProvider;
-	private DummyConfigProvider dummyConfigProvider;
 	private DummyTemperatureAnalyzer dummyTemperatureAnalyzer;
 	private DummyConfigProviderOut dummyConfigProviderOut;
 	private DummyHeatTimeCalculator dummyHeatTimeCalculator;
 	
-	private TemperatureActionFilterNachtHeizung mindesttemperaturFilter;
+	private AbstractTemperaturActionFilterNachtHeizungExtension abstractActionFilter;
 	
 	@Before
 	public void setUp()
 	{
 		dummyTimeProvider = new DummyTimeProvider();
-		dummyConfigProvider = new DummyConfigProvider();
 		dummyTemperatureAnalyzer = new DummyTemperatureAnalyzer();
 		dummyConfigProviderOut = new DummyConfigProviderOut();
 		dummyHeatTimeCalculator = new DummyHeatTimeCalculator();
-		mindesttemperaturFilter = new TemperatureActionFilterNachtHeizung(
-				dummyTimeProvider, dummyConfigProvider, dummyTemperatureAnalyzer, dummyConfigProviderOut, dummyHeatTimeCalculator);
+		abstractActionFilter = new AbstractTemperaturActionFilterNachtHeizungExtension(dummyTimeProvider, dummyConfigProviderOut, dummyTemperatureAnalyzer, dummyHeatTimeCalculator);
 	}
 
 	
@@ -44,7 +47,7 @@ public class TemperatureActionFilterNachtHeizungTest
 	{
 		dummyTimeProvider.setNight(false);
 		
-		assertThat(mindesttemperaturFilter.filter(), equalTo(false));
+		assertThat(abstractActionFilter.filter(), equalTo(false));
 		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
@@ -54,9 +57,9 @@ public class TemperatureActionFilterNachtHeizungTest
 		dummyTimeProvider.setNight(true);
 		dummyHeatTimeCalculator.setTimetoHeat(0);
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(60f));
-		dummyConfigProvider.setTargetTemperature(new TemperatureImpl(50f));
+		abstractActionFilter.setTargetTemperature(new TemperatureImpl(50f));
 		
-		assertThat(mindesttemperaturFilter.filter(), equalTo(false));		
+		assertThat(abstractActionFilter.filter(), equalTo(false));		
 		assertThat(dummyHeatTimeCalculator.getStartTemp().getTemperature(), equalTo(60f));		
 		assertThat(dummyHeatTimeCalculator.getEndTemp().getTemperature(), equalTo(50f));		
 		assertThat(dummyHeatTimeCalculator.getHeatPower(), equalTo(HeatPower.HEAT_POWER_3));		
@@ -67,16 +70,16 @@ public class TemperatureActionFilterNachtHeizungTest
 	public void waitsForHeatingEndTime()
 	{		
 		LocalDateTime timecalculated = LocalDateTime.of(2010, 8, 5, 21, 0);
-		LocalDateTime endNachtheizung = LocalDateTime.of(2010, 8, 5, 22, 0);
+		LocalDateTime endHeizung = LocalDateTime.of(2010, 8, 5, 22, 0);
 		
 		dummyTimeProvider.setNight(true);
 		dummyHeatTimeCalculator.setTimetoHeat(60);
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(60f));
-		dummyConfigProvider.setTargetTemperature(new TemperatureImpl(50f));
+		abstractActionFilter.setTargetTemperature(new TemperatureImpl(50f));
+		abstractActionFilter.setEndTime(endHeizung);
 		dummyTimeProvider.setDateAddMinutesToTime(timecalculated);
-		dummyTimeProvider.setNextNachtHezungEndTime(endNachtheizung);
 		
-		assertThat(mindesttemperaturFilter.filter(), equalTo(false));		
+		assertThat(abstractActionFilter.filter(), equalTo(false));		
 		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
@@ -84,17 +87,50 @@ public class TemperatureActionFilterNachtHeizungTest
 	public void heatingEndTimeIsOver()
 	{
 		LocalDateTime timecalculated = LocalDateTime.of(2010, 8, 5, 23, 0);
-		LocalDateTime endNachtheizung = LocalDateTime.of(2010, 8, 5, 22, 0);
+		LocalDateTime endHeizung = LocalDateTime.of(2010, 8, 5, 22, 0);
 		
 		dummyTimeProvider.setNight(true);
 		dummyHeatTimeCalculator.setTimetoHeat(60);
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(60f));
-		dummyConfigProvider.setTargetTemperature(new TemperatureImpl(50f));
+		abstractActionFilter.setTargetTemperature(new TemperatureImpl(50f));
+		abstractActionFilter.setEndTime(endHeizung);
 		dummyTimeProvider.setDateAddMinutesToTime(timecalculated);
-		dummyTimeProvider.setNextNachtHezungEndTime(endNachtheizung);
 		
-		assertThat(mindesttemperaturFilter.filter(), equalTo(true));		
+		assertThat(abstractActionFilter.filter(), equalTo(true));		
 		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_3));		
 	}
 	
+	private final class AbstractTemperaturActionFilterNachtHeizungExtension
+	extends AbstractTemperaturActionFilterNachtHeizung 
+	{
+		private LocalDateTime time;
+		private Temperature temperature;
+
+		private AbstractTemperaturActionFilterNachtHeizungExtension(TimeProvider timeProvider,
+		ConfigProviderOut configProviderOut, TemperatureAnalyzer temperatureAnalyzer,
+		HeatTimeCalculator heatTimeCalculator) 
+	{
+		super(timeProvider, configProviderOut, temperatureAnalyzer, heatTimeCalculator);
+	}
+	
+	@Override
+	Temperature getTargetTemperature() {
+		return temperature;
+	}
+	
+	@Override
+	LocalDateTime getEndTime() {
+		return time;
+	}
+	
+	void setTargetTemperature(Temperature temperature)
+	{
+		this.temperature = temperature;		
+	}
+	
+	void setEndTime(LocalDateTime time)
+	{
+		this.time = time;
+	}	
+	}
 }

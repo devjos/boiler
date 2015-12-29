@@ -20,7 +20,8 @@ import de.schleger.boiler.filter.TemperatureActionFilterNachtHeizung;
 import de.schleger.boiler.heat.HeatTimeCalculator;
 import de.schleger.boiler.heat.HeatTimeCalulatorImpl;
 import de.schleger.boiler.heat.HeatTimeInterpolatorImpl;
-import de.schleger.boiler.information.InformationProvider;
+import de.schleger.boiler.information.Fuellstandsanzeige;
+import de.schleger.boiler.information.InformationUpdater;
 import de.schleger.boiler.schedule.BoilerScheduleImpl;
 import de.schleger.boiler.task.BoilerTaskImpl;
 import de.schleger.boiler.time.TimeProvider;
@@ -41,23 +42,24 @@ public class BoilerMain
 	{
 		TimeProvider timeProviderImpl = new TimeProviderImpl();
 		BoilerController boilerContoller = new BoilerControllerGPIOImpl();
-		ConfigProviderIn configProviderFileImpl = new ConfigProviderInFileImpl(FILE_IN);
-		TemperatureAnalyzer temperatureAnalyzerFileImpl = new TemperatureAnalyzerFileImpl(FILE_TEMP);
-		ConfigProviderOut heatProviderFileImpl = new ConfigProviderOutFileImpl(FILE_OUT, boilerContoller);
+		ConfigProviderIn configProviderIn = new ConfigProviderInFileImpl(FILE_IN);
+		TemperatureAnalyzer temperatureAnalyzer = new TemperatureAnalyzerFileImpl(FILE_TEMP);
+		ConfigProviderOut configProviderOut = new ConfigProviderOutFileImpl(FILE_OUT, boilerContoller);
 		HeatTimeCalculator heatTimeCalulator = new HeatTimeCalulatorImpl(new HeatTimeInterpolatorImpl());
 				
 		List<TemperatureActionFilter> temperaturActionFilterList = new ArrayList<TemperatureActionFilter>();
 		temperaturActionFilterList.add(new TemperatureActionFilterNachtHeizung(
-						timeProviderImpl, configProviderFileImpl, temperatureAnalyzerFileImpl, 
-						heatProviderFileImpl, heatTimeCalulator));
+						timeProviderImpl, configProviderIn, temperatureAnalyzer, 
+						configProviderOut, heatTimeCalulator));
 		temperaturActionFilterList.add(new TemperatureActionFilterLegionellen(
-						timeProviderImpl, configProviderFileImpl, temperatureAnalyzerFileImpl, 
-						heatProviderFileImpl, heatTimeCalulator));
+						timeProviderImpl, configProviderIn, temperatureAnalyzer, 
+						configProviderOut, heatTimeCalulator));
 		
-		List<InformationProvider> informationProviderList = new ArrayList<>();
+		List<InformationUpdater> informationProviderList = new ArrayList<>();
 		informationProviderList.add(timeProviderImpl);
-		informationProviderList.add(configProviderFileImpl);
-		informationProviderList.add(temperatureAnalyzerFileImpl);
+		informationProviderList.add(configProviderIn);
+		informationProviderList.add(temperatureAnalyzer);
+		informationProviderList.add(new Fuellstandsanzeige(configProviderIn, configProviderOut, temperatureAnalyzer));
 		
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));
 	    

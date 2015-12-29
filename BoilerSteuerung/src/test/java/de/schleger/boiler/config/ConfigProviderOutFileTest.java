@@ -18,20 +18,20 @@ public class ConfigProviderOutFileTest
 {
 	private static final String BOILER_CONF_OUT  = "boiler.config.out";
 	private static final File FILE_OUT = new File(BOILER_CONF_OUT);
-	private ConfigProviderOutFileImpl heatFileImpl;
+	private ConfigProviderOutFileImpl configProviderOut;
 	private DummyBoilerController dummyBoilerController;
 
 	@Before
 	public void setUp()
 	{
 		dummyBoilerController = new DummyBoilerController();
-		heatFileImpl = new ConfigProviderOutFileImpl(FILE_OUT, dummyBoilerController);
+		configProviderOut = new ConfigProviderOutFileImpl(FILE_OUT, dummyBoilerController);
 	}
 		
 	@Test
 	public void writeHeatToFileAndCallsBoilerController() throws IOException
 	{		
-		heatFileImpl.setHeatPower(HeatPower.HEAT_POWER_3);		
+		configProviderOut.setHeatPower(HeatPower.HEAT_POWER_3);		
 		
 		FileReader fileReader = new FileReader(FILE_OUT);		
 		BufferedReader reader = new BufferedReader(fileReader);
@@ -48,7 +48,7 @@ public class ConfigProviderOutFileTest
 	@Test
 	public void writeNotToHeatToFileAndCallsBoilerController() throws IOException
 	{		
-		heatFileImpl.setHeatPower(HeatPower.HEAT_POWER_0);
+		configProviderOut.setHeatPower(HeatPower.HEAT_POWER_0);
 		
 		FileReader fileReader = new FileReader(FILE_OUT);		
 		BufferedReader reader = new BufferedReader(fileReader);
@@ -65,9 +65,31 @@ public class ConfigProviderOutFileTest
 	@Test
 	public void canRememberHeatState() throws IOException
 	{		
-		heatFileImpl.setHeatPower(HeatPower.HEAT_POWER_2);
-		assertThat(heatFileImpl.isHeating(), equalTo(HeatPower.HEAT_POWER_2));
+		configProviderOut.setHeatPower(HeatPower.HEAT_POWER_2);
+		assertThat(configProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_2));
 	}
 	
 	
+	@Test
+	public void writeFillLevelToFile() throws IOException
+	{		
+		configProviderOut.setFillLevel(38);
+		
+		FileReader fileReader = new FileReader(FILE_OUT);		
+		BufferedReader reader = new BufferedReader(fileReader);
+		
+		Properties prop = new Properties();
+		prop.load(reader);
+		
+		assertThat(prop.getProperty(ConfigKeyOut.FILL_LEVEL.toString()), equalTo("38"));
+		
+		reader.close();
+	}
+	
+	@Test
+	public void canRememberFillLevel() throws IOException
+	{		
+		configProviderOut.setFillLevel(88);
+		assertThat(configProviderOut.getFillLevel(), equalTo(88));
+	}	
 }

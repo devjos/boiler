@@ -30,12 +30,13 @@ public class HeatTimeInterpolatorImpl implements HeatTimeInterpolator
 		// Stufe 3
 		// max value, damit keine out of range exception möglich ist
 		// 50	500	// Hand
+		// 15,2 172
 		// 14,0	165
 		// 8,5	155
 		// 2,0	90
 		// 0	60  // Hand
-		double[] x3 = {0f, 	2.0, 8.5f, 14.0f, 50.0f, Float.MAX_VALUE};
-		double[] y3 = {60f, 90f, 155f, 165f, 500f, Float.MAX_VALUE};		
+		double[] x3 = {0f, 	2.0, 8.5f, 14.0f, 15.2f, 50.0f, Float.MAX_VALUE};
+		double[] y3 = {60f, 90f, 155f, 165f, 172f, 500f, Float.MAX_VALUE};		
 		interpolate3 = splineInterpolator.interpolate(x3, y3);
 		
 	}

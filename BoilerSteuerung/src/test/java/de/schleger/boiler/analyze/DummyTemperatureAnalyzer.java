@@ -24,8 +24,7 @@ public class DummyTemperatureAnalyzer implements TemperatureAnalyzer {
 	}
 
 	@Override
-	public void updateInformation() {
-		// TODO Auto-generated method stub
+	public void update() {
 		
 	}
 }

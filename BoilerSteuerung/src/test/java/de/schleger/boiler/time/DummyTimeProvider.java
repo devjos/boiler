@@ -8,6 +8,7 @@ public class DummyTimeProvider implements TimeProvider
 	private LocalDateTime nextNachtHezungEndTime;
 	private LocalDateTime time;
 	private LocalDateTime dateAddMinutesToTime;
+	private LocalDateTime nextLegionellenEndTime;
 
 
 
@@ -54,8 +55,20 @@ public class DummyTimeProvider implements TimeProvider
 	}
 
 	@Override
-	public void updateInformation() {
-		// TODO Auto-generated method stub
+	public void update() 
+	{
+		// wird für Tests nicht gebraucht
 		
+	}
+
+	@Override
+	public LocalDateTime getNextLegionellenEndTime() 
+	{
+		return nextLegionellenEndTime;
+	}
+
+	public void setNextLegionellenEndTime(LocalDateTime nextLegionellenEndTime) 
+	{
+		this.nextLegionellenEndTime = nextLegionellenEndTime;
 	}
 }

@@ -32,6 +32,18 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 	{
 		return config.get(ConfigKeyIn.TARGET_TEMPERATURE);
 	}
+	
+	@Override
+	public Temperature getLegionellenTemperature() 
+	{
+		return config.get(ConfigKeyIn.LEGIONELLEN_TEMPERATURE);
+	}
+	
+	@Override
+	public Temperature getEmptyTemperature() 
+	{
+		return config.get(ConfigKeyIn.EMPTY_TEMPERATURE);
+	}
 
 	private Properties readProperties() throws IOException 
 	{
@@ -51,13 +63,10 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 		return prop;
 	}
 
-	@Override
-	public Temperature getLegionellenTemperature() {
-		return config.get(ConfigKeyIn.LEGIONELLEN_TEMPERATURE);
-	}
+
 
 	@Override
-	public void updateInformation() {
+	public void update() {
 		insertDefaultValues();
 		try{
 			Properties prop = readProperties();
