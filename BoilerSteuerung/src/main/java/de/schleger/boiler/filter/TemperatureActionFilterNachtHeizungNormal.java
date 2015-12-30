@@ -9,12 +9,12 @@ import de.schleger.boiler.heat.HeatTimeCalculator;
 import de.schleger.boiler.temperature.Temperature;
 import de.schleger.boiler.time.TimeProvider;
 
-public class TemperatureActionFilterNachtHeizung extends AbstractTemperaturActionFilterNachtHeizung 
+public class TemperatureActionFilterNachtHeizungNormal extends AbstractTemperaturActionFilterNachtHeizung 
 {
 	private TimeProvider timeProvider;
 	private ConfigProviderIn configProviderIn;
 
-	public TemperatureActionFilterNachtHeizung(TimeProvider timeProvider, ConfigProviderIn configProviderIn, TemperatureAnalyzer temperatureAnalyzer, ConfigProviderOut configProviderOut, HeatTimeCalculator heatTimeCalculator) 
+	public TemperatureActionFilterNachtHeizungNormal(TimeProvider timeProvider, ConfigProviderIn configProviderIn, TemperatureAnalyzer temperatureAnalyzer, ConfigProviderOut configProviderOut, HeatTimeCalculator heatTimeCalculator) 
 	{
 		super(timeProvider, configProviderOut, temperatureAnalyzer, heatTimeCalculator);
 		this.timeProvider = timeProvider;

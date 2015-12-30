@@ -14,29 +14,30 @@ public class HeatTimeInterpolatorImpl implements HeatTimeInterpolator
 	{
 		SplineInterpolator splineInterpolator = new SplineInterpolator();
 		
+		// TODO werte für Stufe sind alle nur geschätz und müssen entsprechend bei verwendung nachgetragen werden
 		// Temperature delta / Zeit in min
 		// Stufe 2
-		// max value, damit keine out of range exception möglich ist
-		// 50	800	// Hand
-		// 24,8 450
-		// 7,0	270
-		// 3,5	150
-		// 0	90  // Hand
+		// 50	800	// OLD
+		// 24,8 450 // OLD
+		// 7,0	270 // OLD
+		// 3,5	150 // OLD
+		// 0	90  // OLD
 		double[] x2 = {0.0f, 3.5f, 7.0f, 24.8f, 50.0f, Float.MAX_VALUE};
 		double[] y2 = {90f, 150f, 270f, 450f, 800f, Float.MAX_VALUE};
 		interpolate2 = splineInterpolator.interpolate(x2, y2);
 		
 		
-		// Stufe 3
-		// max value, damit keine out of range exception möglich ist
-		// 50	500	// Hand
-		// 15,2 172
-		// 14,0	165
-		// 8,5	155
-		// 2,0	90
-		// 0	60  // Hand
-		double[] x3 = {0f, 	2.0, 8.5f, 14.0f, 15.2f, 50.0f, Float.MAX_VALUE};
-		double[] y3 = {60f, 90f, 155f, 165f, 172f, 500f, Float.MAX_VALUE};		
+		// Stufe 3 (ungefähr 12 Grad Pro Stunde steigung ab NullPunkt)
+		// 55	325	// OLD
+		// 19,0 145 // OLD
+		// 15,2 135 // OLD
+		// 14,0	125 // OLD
+		// 8,5	95  // OLD
+		// 7,2	85
+		// 2,0	60 	// OLD
+		// 0	50 
+		double[] x3 = {0f, 	2.0, 7.2f, 8.5f, 14.0f, 15.2f, 55.0f, Float.MAX_VALUE};
+		double[] y3 = {50f, 60f, 85f,  95f,  125f,  135f,  325f, Float.MAX_VALUE};		
 		interpolate3 = splineInterpolator.interpolate(x3, y3);
 		
 	}
