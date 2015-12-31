@@ -11,13 +11,13 @@ import de.schleger.boiler.config.DummyConfigProviderIn;
 import de.schleger.boiler.config.DummyConfigProviderOut;
 import de.schleger.boiler.temperature.TemperatureImpl;
 
-public class FuellstandsanzeigeTest 
+public class FillLevelTest 
 {
 	private DummyConfigProviderIn dummyConfigProviderIn;
 	private DummyConfigProviderOut dummyConfigProviderOut;
 	private DummyTemperatureAnalyzer dummyTemperatureAnalyzer;
 	
-	private Fuellstandsanzeige fuellstandsanzeige;
+	private FillLevel fillLevel;
 
 	@Before
 	public void setUp()
@@ -26,7 +26,7 @@ public class FuellstandsanzeigeTest
 		dummyConfigProviderOut = new DummyConfigProviderOut();
 		dummyTemperatureAnalyzer = new DummyTemperatureAnalyzer();
 		
-		fuellstandsanzeige = new Fuellstandsanzeige(dummyConfigProviderIn, dummyConfigProviderOut, dummyTemperatureAnalyzer);	
+		fillLevel = new FillLevel(dummyConfigProviderIn, dummyConfigProviderOut, dummyTemperatureAnalyzer);	
 	}
 	
 	@Test
@@ -36,7 +36,7 @@ public class FuellstandsanzeigeTest
 		dummyConfigProviderIn.setTargetTemperature(new TemperatureImpl(40f));
 		dummyConfigProviderIn.setEmptyTemperature(new TemperatureImpl(25f));
 		
-		fuellstandsanzeige.update();
+		fillLevel.update();
 		
 		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(0));
 	}
@@ -48,7 +48,7 @@ public class FuellstandsanzeigeTest
 		dummyConfigProviderIn.setTargetTemperature(new TemperatureImpl(40f));
 		dummyConfigProviderIn.setEmptyTemperature(new TemperatureImpl(25f));
 		
-		fuellstandsanzeige.update();
+		fillLevel.update();
 		
 		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(100));
 	}
@@ -59,16 +59,20 @@ public class FuellstandsanzeigeTest
 		dummyConfigProviderIn.setTargetTemperature(new TemperatureImpl(40f));
 		dummyConfigProviderIn.setEmptyTemperature(new TemperatureImpl(15f));
 		
+		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(38f));
+		fillLevel.update();		
+		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(79));
+		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(32f));
-		fuellstandsanzeige.update();		
-		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(57));
+		fillLevel.update();		
+		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(59));
 		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(23f));
-		fuellstandsanzeige.update();		
+		fillLevel.update();		
 		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(38));
 		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(18f));
-		fuellstandsanzeige.update();		
+		fillLevel.update();		
 		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(22));
 	}
 }

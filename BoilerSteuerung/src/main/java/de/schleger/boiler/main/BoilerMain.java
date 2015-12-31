@@ -20,7 +20,7 @@ import de.schleger.boiler.filter.TemperatureActionFilterNachtHeizungNormal;
 import de.schleger.boiler.heat.HeatTimeCalculator;
 import de.schleger.boiler.heat.HeatTimeCalulatorImpl;
 import de.schleger.boiler.heat.HeatTimeInterpolatorImpl;
-import de.schleger.boiler.information.Fuellstandsanzeige;
+import de.schleger.boiler.information.FillLevel;
 import de.schleger.boiler.information.InformationUpdater;
 import de.schleger.boiler.schedule.BoilerScheduleImpl;
 import de.schleger.boiler.task.BoilerTaskImpl;
@@ -59,7 +59,7 @@ public class BoilerMain
 		informationProviderList.add(timeProviderImpl);
 		informationProviderList.add(configProviderIn);
 		informationProviderList.add(temperatureAnalyzer);
-		informationProviderList.add(new Fuellstandsanzeige(configProviderIn, configProviderOut, temperatureAnalyzer));
+		informationProviderList.add(new FillLevel(configProviderIn, configProviderOut, temperatureAnalyzer));
 		
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));
 	    

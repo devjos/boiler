@@ -43,5 +43,4 @@ public class TemperatureActionFilterAllHeatModes implements TemperatureActionFil
 		
 		return true;
 	}
-
 }

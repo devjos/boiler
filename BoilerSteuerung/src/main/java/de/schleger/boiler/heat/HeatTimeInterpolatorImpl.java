@@ -34,10 +34,11 @@ public class HeatTimeInterpolatorImpl implements HeatTimeInterpolator
 		// 14,0	125 // OLD
 		// 8,5	95  // OLD
 		// 7,2	85
+		// 3,0	65
 		// 2,0	60 	// OLD
 		// 0	50 
-		double[] x3 = {0f, 	2.0, 7.2f, 8.5f, 14.0f, 15.2f, 55.0f, Float.MAX_VALUE};
-		double[] y3 = {50f, 60f, 85f,  95f,  125f,  135f,  325f, Float.MAX_VALUE};		
+		double[] x3 = {0f, 	2.0, 3.0, 7.2f, 8.5f, 14.0f, 15.2f, 55.0f, Float.MAX_VALUE};
+		double[] y3 = {50f, 60f, 65f, 85f,  95f,  125f,  135f,  325f, Float.MAX_VALUE};		
 		interpolate3 = splineInterpolator.interpolate(x3, y3);
 		
 	}
