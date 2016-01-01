@@ -13,7 +13,7 @@ public class TemperatureActionFilterMindesttemperaturUnterTag implements Tempera
 
 	private static final Logger LOG = LogManager.getLogger(TemperatureActionFilterMindesttemperaturUnterTag.class);
 	
-	// TODO Aus Config verwenden
+	// TODO Wert aus Config verwenden
 	private static final Temperature MIN_TEMPERATURE = new TemperatureImpl(20.00f);
 	private TemperatureAnalyzer analyzer;
 	private TimeProvider timeProvider;
