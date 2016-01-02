@@ -28,17 +28,17 @@ public class HeatTimeInterpolatorImpl implements HeatTimeInterpolator
 		
 		
 		// Stufe 3 (ungefähr 12 Grad Pro Stunde steigung ab NullPunkt)
-		// 55	325	// OLD
-		// 15,2 135 // OLD
-		// 14,0	125 // OLD
+		// 55	320	// OLD
+		// 15,2 130 // OLD
+		// 14,0	120 // OLD
 		// 12,0 110
-		// 8,5	95  // OLD
+		// 9,2	100
 		// 7,2	85
 		// 3,0	65
 		// 2,0	60 	// OLD
 		// 0	50 
-		double[] x3 = {0f, 	2.0, 3.0, 7.2f, 8.5f, 12.0f, 14.0f, 15.2f, 55.0f, Float.MAX_VALUE};
-		double[] y3 = {50f, 60f, 65f, 85f,  95f,  110f,  125f,  135f,  325f, Float.MAX_VALUE};		
+		double[] x3 = {0f, 	2.0, 3.0, 7.2f, 9.2f, 12.0f, 14.0f, 15.2f, 55.0f, Float.MAX_VALUE};
+		double[] y3 = {50f, 60f, 65f, 85f,  100f,  110f,  120f,  130f,  320f, Float.MAX_VALUE};		
 		interpolate3 = splineInterpolator.interpolate(x3, y3);
 		
 	}

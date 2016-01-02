@@ -22,10 +22,10 @@ public class HeatTimeCalculatorTest
 	@Test
 	public void errechnetAusDifferenzZuTargetDieZeitUndAddiertEinenPuffer()
 	{				
-		assertThat(heatTimeCalulator.calculate(new TemperatureImpl(new Float(20.0f)), new TemperatureImpl(new Float(40f)), HeatPower.HEAT_POWER_3), equalTo(55));
-		assertThat(heatTimeCalulator.calculate(new TemperatureImpl(new Float(20.81f)), new TemperatureImpl(new Float(48.63f)), HeatPower.HEAT_POWER_2), equalTo(127));
-		assertThat(heatTimeCalulator.calculate(new TemperatureImpl(new Float(20.81f)), new TemperatureImpl(new Float(20.82f)), HeatPower.HEAT_POWER_1), equalTo(16));
-		assertThat(heatTimeCalulator.calculate(new TemperatureImpl(new Float(39.75f)), new TemperatureImpl(new Float(40f)), HeatPower.HEAT_POWER_1), equalTo(17));
+		assertThat(heatTimeCalulator.calculate(new TemperatureImpl(new Float(20.0f)), new TemperatureImpl(new Float(40f)), HeatPower.HEAT_POWER_3), equalTo(46));
+		assertThat(heatTimeCalulator.calculate(new TemperatureImpl(new Float(20.81f)), new TemperatureImpl(new Float(48.63f)), HeatPower.HEAT_POWER_2), equalTo(128));
+		assertThat(heatTimeCalulator.calculate(new TemperatureImpl(new Float(20.81f)), new TemperatureImpl(new Float(20.82f)), HeatPower.HEAT_POWER_1), equalTo(1));
+		assertThat(heatTimeCalulator.calculate(new TemperatureImpl(new Float(39.75f)), new TemperatureImpl(new Float(40f)), HeatPower.HEAT_POWER_1), equalTo(2));
 	}
 	
 	@Test
