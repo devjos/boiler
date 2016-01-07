@@ -5,8 +5,8 @@ import de.schleger.boiler.temperature.Temperature;
 
 public class HeatTimeCalulatorImpl implements HeatTimeCalculator
 {	
-	// 15 Prozent Puffer
-	private static final float HEAT_BUFFER = 0.15f;
+	// 10 Min Buffer
+	private static final float HEAT_BUFFER = 10.0f;
 	
 	private HeatTimeInterpolator heatTimeInterpolator;
 	
@@ -27,9 +27,8 @@ public class HeatTimeCalulatorImpl implements HeatTimeCalculator
 		float deltaTemperature = endTemp.getTemperature().floatValue() - startTemp.getTemperature().floatValue();
 		// Zeit zum heizen ermitteln sowie Puffer
 		float timeToHeat = heatTimeInterpolator.interpolateTimeToHeat(deltaTemperature, heatPower);
-		float buffer = timeToHeat * HEAT_BUFFER;
 		
 		// Aufrunden + Puffer
-		return (int)Math.ceil(timeToHeat + buffer);
+		return (int)Math.ceil(timeToHeat + HEAT_BUFFER);
 	}
 }
