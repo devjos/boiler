@@ -61,15 +61,15 @@ public class FillLevelTest
 		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(38f));
 		fillLevel.update();		
-		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(79));
+		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(75));
 		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(32f));
 		fillLevel.update();		
-		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(59));
+		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(58));
 		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(23f));
 		fillLevel.update();		
-		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(38));
+		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(37));
 		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(18f));
 		fillLevel.update();		

@@ -19,6 +19,13 @@ status="WARN">
 		</Policies>
 		<DefaultRolloverStrategy max="30"/>
 	</RollingFile>
+	<RollingFile name="fillLevelFile" fileName="/var/log/boiler/fillLevel.log" filePattern="/var/log/boiler/fillLevel.log.%d{yyyy-MM-dd}" >
+		<PatternLayout pattern="%d{ISO8601} %msg%n"/>
+		<Policies>
+			<TimeBasedTriggeringPolicy />
+		</Policies>
+		<DefaultRolloverStrategy max="30"/>
+	</RollingFile>
 </Appenders>
 <Loggers>
     <Logger name="log4j.test.Log4jTest" level="trace">
@@ -26,6 +33,9 @@ status="WARN">
     </Logger>
      <Logger name="de.schleger.boiler.boiler.BoilerControllerGPIOImpl">
         <appender-ref ref="powerFile"/>
+    </Logger>
+    <Logger name="de.schleger.boiler.information.FillLevel">
+        <appender-ref ref="fillLevelFile"/>
     </Logger>
     <Root level="trace">
         <AppenderRef ref="Console"/>

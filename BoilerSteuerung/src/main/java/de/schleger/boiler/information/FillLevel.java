@@ -2,13 +2,19 @@ package de.schleger.boiler.information;
 
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import de.schleger.boiler.analyze.TemperatureAnalyzer;
 import de.schleger.boiler.config.ConfigProviderIn;
 import de.schleger.boiler.config.ConfigProviderOut;
 
 public class FillLevel implements InformationUpdater
-{
+{	
+	private static final Logger LOG = LogManager.getLogger(FillLevel.class);
+	
+	private static final float HEAT_TEMPERATURE_DELTA = 0.75f;
+	
 	private ConfigProviderIn configProviderIn;
 	private ConfigProviderOut configProviderOut;
 	private TemperatureAnalyzer temperatureAnalyzer;
@@ -22,8 +28,10 @@ public class FillLevel implements InformationUpdater
 	
 	@Override
 	public void update() 
-	{       
-        float target = configProviderIn.getTargetTemperature().getTemperature();
+	{
+		// Da die TargetTemperatur beim heizen überschritten wird, 
+		// wird noch ein TemperaturDelta addiert um einen genaueren Füllstand zu erzeugen		
+        float target = configProviderIn.getTargetTemperature().getTemperature() + HEAT_TEMPERATURE_DELTA;
         float min = configProviderIn.getEmptyTemperature().getTemperature();
         float ist = temperatureAnalyzer.getAverageTemperature().getTemperature();
         
@@ -48,7 +56,11 @@ public class FillLevel implements InformationUpdater
         double[] estimatet =	{0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0, 80.0, 85.0, 90.0, 95.0, 100.0};
         
         PolynomialSplineFunction interpolate = new SplineInterpolator().interpolate(real, estimatet);
-            
-        configProviderOut.setFillLevel(Math.round((float)interpolate.value(fuellstandPercentage)));
+        
+        int fillLevel = Math.round((float)interpolate.value(fuellstandPercentage));
+        
+		LOG.info("FILL_LEVEL=" + fillLevel);
+                    
+        configProviderOut.setFillLevel(fillLevel);
 	}	
 }
