@@ -1,6 +1,5 @@
 package de.schleger.boiler.analyze;
 
-import de.schleger.boiler.analyze.TemperatureAnalyzer;
 import de.schleger.boiler.temperature.Temperature;
 
 public class DummyTemperatureAnalyzer implements TemperatureAnalyzer {
@@ -16,11 +15,6 @@ public class DummyTemperatureAnalyzer implements TemperatureAnalyzer {
 	public void setTemperature(Temperature t)
 	{
 		this.t = t;		
-	}
-
-	@Override
-	public Temperature getLastTemperature() {
-		return t;
 	}
 
 	@Override

@@ -15,7 +15,9 @@ import de.schleger.boiler.temperature.TemperatureImpl;
 public class TemperatureAnalyzerFileTest 
 {
 	private static final String TEMP_LOG = "temp.log";
+	private static final String TEMP_ERROR_LOG = "bin/temp_dirtyfile.log";
 	private static final File FILE = new File(TEMP_LOG);
+	private static final File FILE_ERROR = new File(TEMP_ERROR_LOG);
 	
 	private TemperatureAnalyzerFileImpl temperaturProviderFileImpl;
 
@@ -36,8 +38,12 @@ public class TemperatureAnalyzerFileTest
 	}
 	
 	@Test
-	public void readLastTemperatureFromFile(){
-		Temperature temperatureImpl = new TemperatureImpl(28.67f);
-		assertThat(temperaturProviderFileImpl.getLastTemperature(), equalTo(temperatureImpl));
+	public void canHandleDirtyTempLog()
+	{
+		temperaturProviderFileImpl = new TemperatureAnalyzerFileImpl(FILE_ERROR);
+		temperaturProviderFileImpl.update();
+
+		Temperature temperatureImpl = new TemperatureImpl(100f);
+		assertThat(temperaturProviderFileImpl.getAverageTemperature(), equalTo(temperatureImpl));
 	}
 }
