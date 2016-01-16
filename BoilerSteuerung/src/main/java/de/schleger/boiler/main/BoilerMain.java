@@ -69,7 +69,7 @@ public class BoilerMain
 		informationProviderList.add(timeProviderImpl);
 		informationProviderList.add(configProviderIn);
 		informationProviderList.add(temperatureAnalyzer);
-		informationProviderList.add(new FillLevel(configProviderIn, configProviderOut, temperatureAnalyzer));
+		informationProviderList.add(new FillLevel(configProviderIn, configProviderOut, temperatureAnalyzer, timeProviderImpl));
 		informationProviderList.add(new LogFileChecker(timeProviderImpl, FILE_LOG_DIRECTORY, MAX_LOG_FILE_ALIVE_TIME_IN_DAYS, new LogDescriptor(BOILER_LOG, 31), new LogDescriptor(FILL_LEVEL_LOG, 31)));
 		
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));

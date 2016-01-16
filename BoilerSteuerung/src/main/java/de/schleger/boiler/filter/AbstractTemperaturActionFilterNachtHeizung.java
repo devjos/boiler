@@ -37,7 +37,8 @@ public abstract class AbstractTemperaturActionFilterNachtHeizung implements Temp
 	@Override
 	public boolean filter() 
 	{
-		if(!timeProvider.isNight())
+		// Wenn noch nicht Nacht ist oder Ende der Heizzeit in weiter Ferne dann gleich wieder raus
+		if(!timeProvider.isNight() || timeProvider.getTime().plusHours(12).isBefore(getEndTime()))
 		{
 			configProviderOut.setHeatPower(HeatPower.HEAT_POWER_0);
 			return false;
@@ -45,7 +46,7 @@ public abstract class AbstractTemperaturActionFilterNachtHeizung implements Temp
 		
 		Temperature temperature = temperatureAnalyzer.getAverageTemperature();
 		Temperature targetTemperature = getTargetTemperature();
-				
+		
 		int timeInMinutes = heatTimeCalculator.calculate(temperature, targetTemperature, HeatPower.HEAT_POWER_3);
 		
 		LOG.log(Level.DEBUG, "istTemperature:" + temperature.getTemperature() 

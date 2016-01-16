@@ -22,8 +22,6 @@ import de.schleger.boiler.time.TimeProvider;
 
 public class AbstractTemperatureActionFilterNachtHeizungTest 
 {
-
-
 	private DummyTimeProvider dummyTimeProvider;
 	private DummyTemperatureAnalyzer dummyTemperatureAnalyzer;
 	private DummyConfigProviderOut dummyConfigProviderOut;
@@ -43,9 +41,21 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 
 	
 	@Test
-	public void heitzNichtAmTag()
+	public void noHeatingOnDay()
 	{
 		dummyTimeProvider.setNight(false);
+		dummyTimeProvider.setTime(LocalDateTime.of(2010, 8, 5, 10, 0));
+		
+		assertThat(abstractActionFilter.filter(), equalTo(false));
+		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
+	}
+	
+	@Test
+	public void exitWhenEndTimeIsMoreThan12HoursAway()
+	{
+		dummyTimeProvider.setNight(true);
+		dummyTimeProvider.setTime(LocalDateTime.of(2010, 8, 5, 10, 0));
+		abstractActionFilter.setEndTime(LocalDateTime.of(2010, 8, 5, 22, 1));
 		
 		assertThat(abstractActionFilter.filter(), equalTo(false));
 		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
@@ -53,11 +63,13 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 	
 	@Test
 	public void noHeatIfNoHeatingTime()
-	{
+	{			
 		dummyTimeProvider.setNight(true);
+		dummyTimeProvider.setTime(LocalDateTime.of(2010, 8, 5, 0, 0));
 		dummyHeatTimeCalculator.setTimetoHeat(0);
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(60f));
 		abstractActionFilter.setTargetTemperature(new TemperatureImpl(50f));
+		abstractActionFilter.setEndTime(LocalDateTime.of(2010, 8, 5, 6, 0));
 		
 		assertThat(abstractActionFilter.filter(), equalTo(false));		
 		assertThat(dummyHeatTimeCalculator.getStartTemp().getTemperature(), equalTo(60f));		
@@ -73,6 +85,7 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 		LocalDateTime endHeizung = LocalDateTime.of(2010, 8, 5, 22, 0);
 		
 		dummyTimeProvider.setNight(true);
+		dummyTimeProvider.setTime(LocalDateTime.of(2010, 8, 5, 15, 0));
 		dummyHeatTimeCalculator.setTimetoHeat(60);
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(60f));
 		abstractActionFilter.setTargetTemperature(new TemperatureImpl(50f));
@@ -90,6 +103,7 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 		LocalDateTime endHeizung = LocalDateTime.of(2010, 8, 5, 22, 0);
 		
 		dummyTimeProvider.setNight(true);
+		dummyTimeProvider.setTime(LocalDateTime.of(2010, 8, 5, 15, 0));
 		dummyHeatTimeCalculator.setTimetoHeat(60);
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(60f));
 		abstractActionFilter.setTargetTemperature(new TemperatureImpl(50f));

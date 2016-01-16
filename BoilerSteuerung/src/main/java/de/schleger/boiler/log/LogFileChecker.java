@@ -104,7 +104,7 @@ public class LogFileChecker implements InformationUpdater
 	private boolean isFileOldEnoughToDelete(Path completeFilePath, int logLifeTimeInDays) throws IOException 
 	{
         Instant instant = Instant.ofEpochMilli(Files.getLastModifiedTime(completeFilePath).toMillis());
-        LocalDateTime LastModifiedTimeOfFile = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+        LocalDateTime LastModifiedTimeOfFile = LocalDateTime.ofInstant(instant, ZoneOffset.systemDefault());
         
         if(LastModifiedTimeOfFile.plusDays(logLifeTimeInDays).isBefore(timeProvider.getTime()))
         {

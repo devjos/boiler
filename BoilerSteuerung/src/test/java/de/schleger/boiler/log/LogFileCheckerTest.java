@@ -38,7 +38,7 @@ public class LogFileCheckerTest
 	@Test
 	public void loeschtAlleBeschriebenenFilesDieAltGenugSind()
 	{		
-		timeProvider.setTime(LocalDateTime.now().plusDays(2));		
+		timeProvider.setTime(LocalDateTime.now().plusDays(10));		
 		logDelete.update();
 		
 		assertThat(Files.exists(DUMMY_FILE.toPath()), equalTo(false));
