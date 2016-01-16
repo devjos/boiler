@@ -20,20 +20,22 @@ import de.schleger.boiler.time.TimeProvider;
 public class LogFileChecker implements InformationUpdater
 {
 	private static final int LOG_FILE_CHECK_INTERVAL_IN_DAYS = 1;
-	private static final int LOG_FILE_ALIVE_TIME_IN_DAYS = 365;
+
 
 	private static final Logger LOG = LogManager.getLogger(LogFileChecker.class);
 	
 	private File logDirectory;
+	private int maxLogFileAliveTime;
 	private TimeProvider timeProvider;
 	private List<LogDescriptor> logList;
 
 	private LocalDateTime timeLastFileCheck;
 
-	public LogFileChecker(TimeProvider timeProvider, File logDirectory, LogDescriptor... logDescriptor) 
+	public LogFileChecker(TimeProvider timeProvider, File logDirectory, int maxLogFileAliveTime,  LogDescriptor... logDescriptor) 
 	{
 		this.timeProvider = timeProvider;
-		this.logDirectory = logDirectory;		
+		this.logDirectory = logDirectory;
+		this.maxLogFileAliveTime = maxLogFileAliveTime;		
 		logList = Arrays.asList(logDescriptor);	
 	}
 	
@@ -77,7 +79,7 @@ public class LogFileChecker implements InformationUpdater
 	            	}
 	            	else
 	            	{
-	            		if(isFileOldEnoughToDelete(completeFilePath, LOG_FILE_ALIVE_TIME_IN_DAYS))
+	            		if(isFileOldEnoughToDelete(completeFilePath, maxLogFileAliveTime))
 	            		{
 	            			deleteFile(completeFilePath);
 	            		}

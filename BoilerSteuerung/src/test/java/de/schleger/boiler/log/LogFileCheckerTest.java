@@ -29,7 +29,7 @@ public class LogFileCheckerTest
 	public void setUp() throws IOException
 	{
 		timeProvider = new DummyTimeProvider();
-		logDelete = new LogFileChecker(timeProvider, new File(LOG_PATH), new LogDescriptor(DUMMY_FILE_PATH, 1));		
+		logDelete = new LogFileChecker(timeProvider, new File(LOG_PATH), 365, new LogDescriptor(DUMMY_FILE_PATH, 1));		
 		
 		Files.write(DUMMY_FILE.toPath(), "".getBytes(), StandardOpenOption.CREATE);
 		Files.write(DUMMY_FILE_2.toPath(), "".getBytes(), StandardOpenOption.CREATE);
