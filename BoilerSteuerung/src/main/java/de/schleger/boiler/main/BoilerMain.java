@@ -22,6 +22,8 @@ import de.schleger.boiler.heat.HeatTimeCalulatorImpl;
 import de.schleger.boiler.heat.HeatTimeInterpolatorImpl;
 import de.schleger.boiler.information.FillLevel;
 import de.schleger.boiler.information.InformationUpdater;
+import de.schleger.boiler.log.LogDescriptor;
+import de.schleger.boiler.log.LogFileChecker;
 import de.schleger.boiler.schedule.BoilerScheduleImpl;
 import de.schleger.boiler.task.BoilerTaskImpl;
 import de.schleger.boiler.time.TimeProvider;
@@ -29,6 +31,12 @@ import de.schleger.boiler.time.TimeProviderImpl;
 
 public class BoilerMain 
 {
+	private static final String LOG_DIRECTORY = "/var/log/boiler/";
+	private static final File FILE_LOG_DIRECTORY = new File(LOG_DIRECTORY);
+	
+	private static final String BOILER_LOG = "boiler.log";
+	private static final String FILL_LEVEL_LOG = "fillLevel.log";
+	
 	private static final String BOILER_CONF_IN = "/etc/boiler/boiler.config.in";
 	private static final File FILE_IN = new File(BOILER_CONF_IN);
 	
@@ -60,6 +68,7 @@ public class BoilerMain
 		informationProviderList.add(configProviderIn);
 		informationProviderList.add(temperatureAnalyzer);
 		informationProviderList.add(new FillLevel(configProviderIn, configProviderOut, temperatureAnalyzer));
+		informationProviderList.add(new LogFileChecker(timeProviderImpl, FILE_LOG_DIRECTORY, new LogDescriptor(BOILER_LOG, 31), new LogDescriptor(FILL_LEVEL_LOG, 31)));
 		
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));
 	    
