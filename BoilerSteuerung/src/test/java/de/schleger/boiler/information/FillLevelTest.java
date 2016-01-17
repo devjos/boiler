@@ -89,13 +89,17 @@ public class FillLevelTest
 		dummyConfigProviderIn.setEmptyTemperature(new TemperatureImpl(15f));
 		
 		// Neues maximum
-		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(50f));
+		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(51.37f));
+		fillLevel.update();		
+		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(100));
+		
+		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(51.36999f));
 		fillLevel.update();		
 		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(100));
 		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(32f));
 		fillLevel.update();		
-		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(49));
+		assertThat(dummyConfigProviderOut.getFillLevel(), equalTo(47));
 		
 		dummyTemperatureAnalyzer.setTemperature(new TemperatureImpl(23f));
 		fillLevel.update();		

@@ -31,8 +31,8 @@ public class FillLevel implements InformationUpdater
 		this.temperatureAnalyzer = temperatureAnalyzer;
 		this.timeProvider = timeProvider;
 		
-        double[] real =         {0.0, 1.0, 03.0, 06.0, 10.0, 15.0, 21.0, 28.0, 36.0, 45.0, 50.0, 61.0, 69.0, 76.0, 84.0, 89.0, 93.0, 96.0, 98.0, 99.0, 100.0};
-        double[] estimatet =	{0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0, 80.0, 85.0, 90.0, 95.0, 100.0};        
+        double[] real =         {0.0, 1.0, 03.0, 06.0, 10.0, 15.0, 21.0, 28.0, 36.0, 45.0, 50.0, 61.0, 69.0, 76.0, 84.0, 89.0, 93.0, 96.0, 98.0, 99.0, 100.0, Float.MAX_VALUE};
+        double[] estimatet =	{0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0, 55.0, 60.0, 65.0, 70.0, 75.0, 80.0, 85.0, 90.0, 95.0, 100.0, Float.MAX_VALUE};
         interpolate = new SplineInterpolator().interpolate(real, estimatet);		
 	}
 	
@@ -50,11 +50,18 @@ public class FillLevel implements InformationUpdater
             return;
         }
         
-        float onePercent = (target - min) / 100f;        
-        float fuellstandPercentage = (ist - min) / onePercent;                
-        
-        int fillLevel = Math.round((float)interpolate.value(fuellstandPercentage));       
-        tellConfigProviderFillLevel(fillLevel);
+        try 
+        {
+        	float onePercent = (target - min) / 100f;        
+        	float fuellstandPercentage = (ist - min) / onePercent;
+        	
+        	int fillLevel = Math.round((float)interpolate.value(fuellstandPercentage));   
+        	tellConfigProviderFillLevel(fillLevel);			
+		} 
+        catch (Exception e) 
+        {
+    		LOG.error("Fehler beim ermitteln des FillLevel", e);
+		}
 	}
 
 	/**
