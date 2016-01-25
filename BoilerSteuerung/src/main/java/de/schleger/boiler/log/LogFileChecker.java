@@ -21,7 +21,6 @@ public class LogFileChecker implements InformationUpdater
 {
 	private static final int LOG_FILE_CHECK_INTERVAL_IN_DAYS = 1;
 
-
 	private static final Logger LOG = LogManager.getLogger(LogFileChecker.class);
 	
 	private File logDirectory;

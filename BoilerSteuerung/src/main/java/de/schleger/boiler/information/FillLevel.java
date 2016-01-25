@@ -55,7 +55,12 @@ public class FillLevel implements InformationUpdater
         	float onePercent = (target - min) / 100f;        
         	float fuellstandPercentage = (ist - min) / onePercent;
         	
-        	float fillLevel = (float)interpolate.value(fuellstandPercentage);   
+        	float fillLevel = (float)interpolate.value(fuellstandPercentage);
+        	if(fillLevel > 100f)
+        	{
+        		fillLevel = 100f;
+        	}
+        	
         	tellConfigProviderFillLevel(fillLevel);			
 		} 
         catch (Exception e) 

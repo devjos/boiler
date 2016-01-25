@@ -31,7 +31,7 @@ import de.schleger.boiler.time.TimeProviderImpl;
 
 public class BoilerMain 
 {
-	private static final int MAX_LOG_FILE_ALIVE_TIME_IN_DAYS = 365;
+	private static final int MAX_LOG_FILE_ALIVE_TIME_IN_DAYS = 366;
 	
 	private static final String LOG_DIRECTORY = "/var/log/boiler/";
 	private static final File FILE_LOG_DIRECTORY = new File(LOG_DIRECTORY);
@@ -70,7 +70,7 @@ public class BoilerMain
 		informationProviderList.add(configProviderIn);
 		informationProviderList.add(temperatureAnalyzer);
 		informationProviderList.add(new FillLevel(configProviderIn, configProviderOut, temperatureAnalyzer, timeProviderImpl));
-		informationProviderList.add(new LogFileChecker(timeProviderImpl, FILE_LOG_DIRECTORY, MAX_LOG_FILE_ALIVE_TIME_IN_DAYS, new LogDescriptor(BOILER_LOG, 31), new LogDescriptor(FILL_LEVEL_LOG, 31)));
+		informationProviderList.add(new LogFileChecker(timeProviderImpl, FILE_LOG_DIRECTORY, MAX_LOG_FILE_ALIVE_TIME_IN_DAYS, new LogDescriptor(BOILER_LOG, 32), new LogDescriptor(FILL_LEVEL_LOG, 32)));
 		
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));
 	    
