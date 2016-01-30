@@ -1,5 +1,7 @@
 package de.schleger.boiler.config;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,66 +12,17 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.schleger.boiler.boiler.BoilerController;
-
-public class ConfigProviderOutFileImpl implements ConfigProviderOut 
+public class ConfigProviderOutFileImpl implements PropertyChangeListener
 {
 	private static final Logger LOG = LogManager.getLogger(ConfigProviderOutFileImpl.class);
 	
-	private BoilerController boilerController;
-	
-	private Properties prop;
-	private File file;
-	
-	private HeatPower heatPower;
-	private int fillLevel;
+	private final Properties prop = new Properties();
+	private final File file;
 
-	public ConfigProviderOutFileImpl(File file, BoilerController boilerController) 
+
+	public ConfigProviderOutFileImpl(File file) 
 	{
 		this.file = file;
-		this.boilerController = boilerController;
-		
-		prop = new Properties();
-	}
-	
-	@Override
-	public void setHeatPower(HeatPower heatPower)
-	{		
-		if(heatPower.equals(this.heatPower))
-		{
-			return;
-		}
-		boilerController.setHeatPower(heatPower);
-		
-		this.heatPower = heatPower;
-		prop.setProperty(ConfigKeyOut.HEAT_LEVEL.toString(), heatPower.toString());
-		
-		writePropertiesToFile();
-	}
-	
-	@Override
-	public HeatPower isHeating() 
-	{
-		return heatPower;
-	}
-	
-	@Override
-	public void setFillLevel(int fillLevel) 
-	{
-		if(this.fillLevel == fillLevel)
-		{
-			return;
-		}
-		this.fillLevel = fillLevel;
-		prop.setProperty(ConfigKeyOut.FILL_LEVEL.toString(), Integer.toString(fillLevel));
-		
-		writePropertiesToFile();		
-	}
-
-	@Override
-	public int getFillLevel() 
-	{
-		return fillLevel;
 	}
 
 	private void writePropertiesToFile() 
@@ -92,4 +45,26 @@ public class ConfigProviderOutFileImpl implements ConfigProviderOut
 			IOUtils.closeQuietly(fileOutputStream);			
 		}
 	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		switch (evt.getPropertyName()) {
+		case "heatPower":
+			HeatPower heatPower = (HeatPower)evt.getNewValue();
+			prop.setProperty(ConfigKeyOut.HEAT_LEVEL.toString(), heatPower.toString());		
+			writePropertiesToFile();
+			break;
+			
+		case "fillLevel":
+			float fillLevel = (float)evt.getNewValue();
+			prop.setProperty(ConfigKeyOut.FILL_LEVEL.toString(), Float.toString(fillLevel));	
+			writePropertiesToFile();		
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+	
 }

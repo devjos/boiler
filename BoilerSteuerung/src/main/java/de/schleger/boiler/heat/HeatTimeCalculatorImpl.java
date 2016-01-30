@@ -3,14 +3,14 @@ package de.schleger.boiler.heat;
 import de.schleger.boiler.config.HeatPower;
 import de.schleger.boiler.temperature.Temperature;
 
-public class HeatTimeCalulatorImpl implements HeatTimeCalculator
+public class HeatTimeCalculatorImpl implements HeatTimeCalculator
 {	
 	// 15 Min Buffer
 	private static final float HEAT_BUFFER = 15.0f;
 	
 	private HeatTimeInterpolator heatTimeInterpolator;
 	
-	public HeatTimeCalulatorImpl(HeatTimeInterpolator heatTimeInterpolator) 
+	public HeatTimeCalculatorImpl(HeatTimeInterpolator heatTimeInterpolator) 
 	{
 		this.heatTimeInterpolator = heatTimeInterpolator;
 	}

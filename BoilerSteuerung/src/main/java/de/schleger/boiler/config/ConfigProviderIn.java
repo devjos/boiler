@@ -10,4 +10,8 @@ public interface ConfigProviderIn extends InformationUpdater
 	public Temperature getLegionellenTemperature();
 
 	public Temperature getEmptyTemperature();
+	
+	public float getEuroPerKwhNight();
+	
+	public float getEuroPerKwhDay();
 }

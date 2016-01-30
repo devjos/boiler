@@ -8,22 +8,23 @@ import java.util.TimerTask;
 
 import de.schleger.boiler.analyze.TemperatureAnalyzer;
 import de.schleger.boiler.analyze.TemperatureAnalyzerFileImpl;
-import de.schleger.boiler.boiler.BoilerController;
 import de.schleger.boiler.boiler.BoilerControllerGPIOImpl;
 import de.schleger.boiler.config.ConfigProviderIn;
 import de.schleger.boiler.config.ConfigProviderInFileImpl;
-import de.schleger.boiler.config.ConfigProviderOut;
 import de.schleger.boiler.config.ConfigProviderOutFileImpl;
 import de.schleger.boiler.filter.TemperatureActionFilter;
 import de.schleger.boiler.filter.TemperatureActionFilterNachtHeizungLegionellen;
 import de.schleger.boiler.filter.TemperatureActionFilterNachtHeizungNormal;
+import de.schleger.boiler.heat.HeatCostCalculatorImpl;
+import de.schleger.boiler.heat.HeatCostLogging;
 import de.schleger.boiler.heat.HeatTimeCalculator;
-import de.schleger.boiler.heat.HeatTimeCalulatorImpl;
+import de.schleger.boiler.heat.HeatTimeCalculatorImpl;
 import de.schleger.boiler.heat.HeatTimeInterpolatorImpl;
 import de.schleger.boiler.information.FillLevel;
 import de.schleger.boiler.information.InformationUpdater;
 import de.schleger.boiler.log.LogDescriptor;
 import de.schleger.boiler.log.LogFileChecker;
+import de.schleger.boiler.model.BoilerModel;
 import de.schleger.boiler.schedule.BoilerScheduleImpl;
 import de.schleger.boiler.task.BoilerTaskImpl;
 import de.schleger.boiler.time.TimeProvider;
@@ -50,27 +51,29 @@ public class BoilerMain
 	
 	public static void main(String[] args) 
 	{
-		TimeProvider timeProviderImpl = new TimeProviderImpl();
-		BoilerController boilerContoller = new BoilerControllerGPIOImpl();
+		BoilerModel boiler = new BoilerModel();
+		TimeProvider timeProvider = new TimeProviderImpl();
+		boiler.addPropertyChangeListener("heatPower", new BoilerControllerGPIOImpl());
 		ConfigProviderIn configProviderIn = new ConfigProviderInFileImpl(FILE_IN);
+		boiler.addPropertyChangeListener("heatPower", new HeatCostLogging(timeProvider, new HeatCostCalculatorImpl(configProviderIn)));
 		TemperatureAnalyzer temperatureAnalyzer = new TemperatureAnalyzerFileImpl(FILE_TEMP);
-		ConfigProviderOut configProviderOut = new ConfigProviderOutFileImpl(FILE_OUT, boilerContoller);
-		HeatTimeCalculator heatTimeCalulator = new HeatTimeCalulatorImpl(new HeatTimeInterpolatorImpl());
+		boiler.addPropertyChangeListener(new ConfigProviderOutFileImpl(FILE_OUT));
+		HeatTimeCalculator heatTimeCalulator = new HeatTimeCalculatorImpl(new HeatTimeInterpolatorImpl());
 				
 		List<TemperatureActionFilter> temperaturActionFilterList = new ArrayList<TemperatureActionFilter>();
 		temperaturActionFilterList.add(new TemperatureActionFilterNachtHeizungNormal(
-						timeProviderImpl, configProviderIn, temperatureAnalyzer, 
-						configProviderOut, heatTimeCalulator));
+						timeProvider, configProviderIn, temperatureAnalyzer, 
+						boiler, heatTimeCalulator));
 		temperaturActionFilterList.add(new TemperatureActionFilterNachtHeizungLegionellen(
-						timeProviderImpl, configProviderIn, temperatureAnalyzer, 
-						configProviderOut, heatTimeCalulator));
+						timeProvider, configProviderIn, temperatureAnalyzer, 
+						boiler, heatTimeCalulator));
 		
 		List<InformationUpdater> informationProviderList = new ArrayList<>();
-		informationProviderList.add(timeProviderImpl);
+		informationProviderList.add(timeProvider);
 		informationProviderList.add(configProviderIn);
 		informationProviderList.add(temperatureAnalyzer);
-		informationProviderList.add(new FillLevel(configProviderIn, configProviderOut, temperatureAnalyzer, timeProviderImpl));
-		informationProviderList.add(new LogFileChecker(timeProviderImpl, FILE_LOG_DIRECTORY, MAX_LOG_FILE_ALIVE_TIME_IN_DAYS, new LogDescriptor(BOILER_LOG, 32), new LogDescriptor(FILL_LEVEL_LOG, 32)));
+		informationProviderList.add(new FillLevel(configProviderIn, boiler, temperatureAnalyzer, timeProvider));
+		informationProviderList.add(new LogFileChecker(timeProvider, FILE_LOG_DIRECTORY, MAX_LOG_FILE_ALIVE_TIME_IN_DAYS, new LogDescriptor(BOILER_LOG, 32), new LogDescriptor(FILL_LEVEL_LOG, 32)));
 		
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));
 	    

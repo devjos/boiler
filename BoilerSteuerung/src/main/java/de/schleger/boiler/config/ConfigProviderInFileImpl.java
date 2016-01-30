@@ -20,7 +20,7 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 	
 	private final File file;
 	
-	private final HashMap<ConfigKeyIn, TemperatureImpl> config = new HashMap<>();
+	private final HashMap<ConfigKeyIn, Float> config = new HashMap<>();
 
 	public ConfigProviderInFileImpl(File file) 
 	{
@@ -30,19 +30,29 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 	@Override
 	public Temperature getTargetTemperature() 
 	{
-		return config.get(ConfigKeyIn.TARGET_TEMPERATURE);
+		return new TemperatureImpl(config.get(ConfigKeyIn.TARGET_TEMPERATURE));
 	}
 	
 	@Override
 	public Temperature getLegionellenTemperature() 
 	{
-		return config.get(ConfigKeyIn.LEGIONELLEN_TEMPERATURE);
+		return new TemperatureImpl(config.get(ConfigKeyIn.LEGIONELLEN_TEMPERATURE));
 	}
 	
 	@Override
 	public Temperature getEmptyTemperature() 
 	{
-		return config.get(ConfigKeyIn.EMPTY_TEMPERATURE);
+		return new TemperatureImpl(config.get(ConfigKeyIn.EMPTY_TEMPERATURE));
+	}
+	
+	@Override
+	public float getEuroPerKwhNight() {
+		return config.get(ConfigKeyIn.EURO_PER_KWH_NIGHT);
+	}
+
+	@Override
+	public float getEuroPerKwhDay() {
+		return config.get(ConfigKeyIn.EURO_PER_KWH_DAY);
 	}
 
 	private Properties readProperties() throws IOException 
@@ -64,7 +74,6 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 	}
 
 
-
 	@Override
 	public void update() {
 		insertDefaultValues();
@@ -72,7 +81,7 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 			Properties prop = readProperties();
 			for ( ConfigKeyIn key : ConfigKeyIn.values() ){
 				try{
-					config.put(key, new TemperatureImpl(Float.parseFloat(prop.getProperty(key.toString()))));
+					config.put(key, Float.parseFloat(prop.getProperty(key.toString())));
 				}catch( Exception e){
 					LOG.info("Cannot convert config key " + key);
 				}
@@ -84,7 +93,8 @@ public class ConfigProviderInFileImpl implements ConfigProviderIn
 	
 	private void insertDefaultValues() {
 		for ( ConfigKeyIn key : ConfigKeyIn.values() ){
-			config.put(key, new TemperatureImpl(ConfigKeyIn.getDefault(key)));
+			config.put(key, ConfigKeyIn.getDefault(key));
 		}
 	}
+
 }

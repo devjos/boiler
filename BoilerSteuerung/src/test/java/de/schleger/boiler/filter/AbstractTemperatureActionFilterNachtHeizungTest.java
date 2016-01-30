@@ -10,11 +10,10 @@ import org.junit.Test;
 
 import de.schleger.boiler.analyze.DummyTemperatureAnalyzer;
 import de.schleger.boiler.analyze.TemperatureAnalyzer;
-import de.schleger.boiler.config.ConfigProviderOut;
-import de.schleger.boiler.config.DummyConfigProviderOut;
 import de.schleger.boiler.config.HeatPower;
 import de.schleger.boiler.heat.DummyHeatTimeCalculator;
 import de.schleger.boiler.heat.HeatTimeCalculator;
+import de.schleger.boiler.model.BoilerModel;
 import de.schleger.boiler.temperature.Temperature;
 import de.schleger.boiler.temperature.TemperatureImpl;
 import de.schleger.boiler.time.DummyTimeProvider;
@@ -24,7 +23,7 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 {
 	private DummyTimeProvider dummyTimeProvider;
 	private DummyTemperatureAnalyzer dummyTemperatureAnalyzer;
-	private DummyConfigProviderOut dummyConfigProviderOut;
+	private BoilerModel boilerModel;
 	private DummyHeatTimeCalculator dummyHeatTimeCalculator;
 	
 	private AbstractTemperaturActionFilterNachtHeizungExtension abstractActionFilter;
@@ -34,9 +33,9 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 	{
 		dummyTimeProvider = new DummyTimeProvider();
 		dummyTemperatureAnalyzer = new DummyTemperatureAnalyzer();
-		dummyConfigProviderOut = new DummyConfigProviderOut();
+		boilerModel = new BoilerModel();
 		dummyHeatTimeCalculator = new DummyHeatTimeCalculator();
-		abstractActionFilter = new AbstractTemperaturActionFilterNachtHeizungExtension(dummyTimeProvider, dummyConfigProviderOut, dummyTemperatureAnalyzer, dummyHeatTimeCalculator);
+		abstractActionFilter = new AbstractTemperaturActionFilterNachtHeizungExtension(dummyTimeProvider, boilerModel, dummyTemperatureAnalyzer, dummyHeatTimeCalculator);
 	}
 
 	
@@ -47,7 +46,7 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 		dummyTimeProvider.setTime(LocalDateTime.of(2010, 8, 5, 10, 0));
 		
 		assertThat(abstractActionFilter.filter(), equalTo(false));
-		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
+		assertThat(boilerModel.getHeatPower(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
 	@Test
@@ -58,7 +57,7 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 		abstractActionFilter.setEndTime(LocalDateTime.of(2010, 8, 5, 22, 1));
 		
 		assertThat(abstractActionFilter.filter(), equalTo(false));
-		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
+		assertThat(boilerModel.getHeatPower(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
 	@Test
@@ -75,7 +74,7 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 		assertThat(dummyHeatTimeCalculator.getStartTemp().getTemperature(), equalTo(60f));		
 		assertThat(dummyHeatTimeCalculator.getEndTemp().getTemperature(), equalTo(50f));		
 		assertThat(dummyHeatTimeCalculator.getHeatPower(), equalTo(HeatPower.HEAT_POWER_3));		
-		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
+		assertThat(boilerModel.getHeatPower(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
 	@Test
@@ -93,7 +92,7 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 		dummyTimeProvider.setDateAddMinutesToTime(timecalculated);
 		
 		assertThat(abstractActionFilter.filter(), equalTo(false));		
-		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_0));		
+		assertThat(boilerModel.getHeatPower(), equalTo(HeatPower.HEAT_POWER_0));		
 	}
 	
 	@Test
@@ -111,7 +110,7 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 		dummyTimeProvider.setDateAddMinutesToTime(timecalculated);
 		
 		assertThat(abstractActionFilter.filter(), equalTo(true));		
-		assertThat(dummyConfigProviderOut.isHeating(), equalTo(HeatPower.HEAT_POWER_3));		
+		assertThat(boilerModel.getHeatPower(), equalTo(HeatPower.HEAT_POWER_3));		
 	}
 	
 	private final class AbstractTemperaturActionFilterNachtHeizungExtension
@@ -121,10 +120,10 @@ public class AbstractTemperatureActionFilterNachtHeizungTest
 		private Temperature temperature;
 
 		private AbstractTemperaturActionFilterNachtHeizungExtension(TimeProvider timeProvider,
-		ConfigProviderOut configProviderOut, TemperatureAnalyzer temperatureAnalyzer,
+		BoilerModel boilerModel, TemperatureAnalyzer temperatureAnalyzer,
 		HeatTimeCalculator heatTimeCalculator) 
 	{
-		super(timeProvider, configProviderOut, temperatureAnalyzer, heatTimeCalculator);
+		super(timeProvider, boilerModel, temperatureAnalyzer, heatTimeCalculator);
 	}
 	
 	@Override

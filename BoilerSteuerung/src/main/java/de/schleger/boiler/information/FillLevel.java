@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.schleger.boiler.analyze.TemperatureAnalyzer;
 import de.schleger.boiler.config.ConfigProviderIn;
-import de.schleger.boiler.config.ConfigProviderOut;
+import de.schleger.boiler.model.BoilerModel;
 import de.schleger.boiler.time.TimeProvider;
 
 public class FillLevel implements InformationUpdater
@@ -18,16 +18,16 @@ public class FillLevel implements InformationUpdater
 	private PolynomialSplineFunction interpolate;
 	
 	private ConfigProviderIn configProviderIn;
-	private ConfigProviderOut configProviderOut;
+	private BoilerModel boilerModel;
 	private TemperatureAnalyzer temperatureAnalyzer;
 	private TimeProvider timeProvider;
 
 	private float target;
 
-	public FillLevel(ConfigProviderIn configProviderIn, ConfigProviderOut configProviderOut, TemperatureAnalyzer temperatureAnalyzer, TimeProvider timeProvider) 
+	public FillLevel(ConfigProviderIn configProviderIn, BoilerModel boilerModel, TemperatureAnalyzer temperatureAnalyzer, TimeProvider timeProvider) 
 	{
 		this.configProviderIn = configProviderIn;
-		this.configProviderOut = configProviderOut;
+		this.boilerModel = boilerModel;
 		this.temperatureAnalyzer = temperatureAnalyzer;
 		this.timeProvider = timeProvider;
 		
@@ -98,6 +98,6 @@ public class FillLevel implements InformationUpdater
 	private void tellConfigProviderFillLevel(float fillLevel) 
 	{
 		LOG.info("FILL_LEVEL=" + fillLevel);
-		configProviderOut.setFillLevel(Math.round(fillLevel));
+		boilerModel.setFillLevel(Math.round(fillLevel));
 	}	
 }

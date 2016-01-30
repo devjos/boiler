@@ -7,6 +7,8 @@ public class DummyConfigProviderIn implements ConfigProviderIn
 	private Temperature targetTemperature;
 	private Temperature legionellenTemp;
 	private Temperature emptyTemp;
+	private float priceNight;
+	private float priceDay;
 
 	@Override
 	public Temperature getTargetTemperature() 
@@ -42,5 +44,23 @@ public class DummyConfigProviderIn implements ConfigProviderIn
 	@Override
 	public void update() {
 		
+	}
+
+	@Override
+	public float getEuroPerKwhNight() {
+		return priceNight;
+	}
+
+	@Override
+	public float getEuroPerKwhDay() {
+		return priceDay;
+	}
+	
+	public void setEuroPerKwhNight(float euro){
+		this.priceNight = euro;
+	}
+	
+	public void setEuroPerKwhDay(float euro){
+		this.priceDay = euro;
 	}
 }

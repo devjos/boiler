@@ -25,6 +25,13 @@
 		</Policies>
 		<DefaultRolloverStrategy max="30"/>
 	</RollingFile>
+	<RollingFile name="costsFile" fileName="/var/log/boiler/costs.log" filePattern="/var/log/boiler/costs.log.%d{yyyy-MM}" >
+		<PatternLayout pattern="%d{ISO8601} %msg%n"/>
+		<Policies>
+			<TimeBasedTriggeringPolicy />
+		</Policies>
+		<DefaultRolloverStrategy max="30"/>
+	</RollingFile>
 </Appenders>
 <Loggers>
     <Logger name="log4j.test.Log4jTest" level="trace">
@@ -35,6 +42,9 @@
     </Logger>
     <Logger name="de.schleger.boiler.information.FillLevel">
         <appender-ref ref="fillLevelFile"/>
+    </Logger>
+    <Logger name="de.schleger.boiler.heat.HeatCostLogging">
+        <appender-ref ref="costsFile"/>
     </Logger>
     <Root level="trace">
         <AppenderRef ref="Console"/>

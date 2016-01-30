@@ -1,5 +1,8 @@
 package de.schleger.boiler.boiler;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +14,7 @@ import com.pi4j.io.gpio.RaspiPin;
 
 import de.schleger.boiler.config.HeatPower;
 
-public class BoilerControllerGPIOImpl implements BoilerController 
+public class BoilerControllerGPIOImpl implements PropertyChangeListener 
 {
 	private static final Logger LOG = LogManager.getLogger(BoilerControllerGPIOImpl.class);
 	
@@ -31,8 +34,7 @@ public class BoilerControllerGPIOImpl implements BoilerController
 		pin4kw.setShutdownOptions(true, PinState.HIGH);
 	}
 
-	@Override
-	public void setHeatPower(HeatPower heatPower) 
+	private void setHeatPower(HeatPower heatPower) 
 	{
 		LOG.info("GPIO HEAT_LEVEL=" + heatPower.toString());
 		
@@ -59,5 +61,11 @@ public class BoilerControllerGPIOImpl implements BoilerController
 				pin4kw.high();	
 			break;
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		HeatPower power = (HeatPower) evt.getNewValue();
+		setHeatPower(power);
 	}
 }

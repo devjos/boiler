@@ -19,8 +19,7 @@ public class TimeProviderImpl implements TimeProvider
 	@Override
 	public boolean isNight() 
 	{
-		int hour = getTime().getHour();
-		return 21 < hour || 6 > hour;
+		return BoilerTime.isNight(getTime());
 	}
 
 	/**
