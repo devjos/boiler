@@ -39,6 +39,7 @@ public class BoilerMain
 	
 	private static final String BOILER_LOG = "boiler.log";
 	private static final String FILL_LEVEL_LOG = "fillLevel.log";
+	private static final String COSTS_LOG = "costs.log";
 	
 	private static final String BOILER_CONF_IN = "/etc/boiler/boiler.config.in";
 	private static final File FILE_IN = new File(BOILER_CONF_IN);
@@ -48,6 +49,8 @@ public class BoilerMain
 	
 	private static final String TEMP_LOG = "/var/log/temperature/temp.log";
 	private static final File FILE_TEMP = new File(TEMP_LOG);
+	
+	
 	
 	public static void main(String[] args) 
 	{
@@ -73,7 +76,11 @@ public class BoilerMain
 		informationProviderList.add(configProviderIn);
 		informationProviderList.add(temperatureAnalyzer);
 		informationProviderList.add(new FillLevel(configProviderIn, boiler, temperatureAnalyzer, timeProvider));
-		informationProviderList.add(new LogFileChecker(timeProvider, FILE_LOG_DIRECTORY, MAX_LOG_FILE_ALIVE_TIME_IN_DAYS, new LogDescriptor(BOILER_LOG, 32), new LogDescriptor(FILL_LEVEL_LOG, 32)));
+		informationProviderList.add(
+				new LogFileChecker(timeProvider, FILE_LOG_DIRECTORY, MAX_LOG_FILE_ALIVE_TIME_IN_DAYS, 
+						new LogDescriptor(BOILER_LOG, 32), 
+						new LogDescriptor(FILL_LEVEL_LOG, 32),
+						new LogDescriptor(COSTS_LOG, 366)));
 		
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));
 	    
