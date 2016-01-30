@@ -52,6 +52,18 @@ public class ConfigProviderInFileTest
 	}
 	
 	@Test
+	public void readPriceNightFromFile() throws IOException
+	{	
+		assertThat(configProviderFileImpl.getEuroPerKwhNight(), equalTo(0.18f));
+	}
+	
+	@Test
+	public void readPriceDayFromFile() throws IOException
+	{	
+		assertThat(configProviderFileImpl.getEuroPerKwhDay(), equalTo(0.21f));
+	}
+	
+	@Test
 	public void useDefaultValueIfFileIsNotPresent() throws IOException
 	{	
 		configProviderFileImpl = new ConfigProviderInFileImpl(new File("123xyz"));
@@ -65,5 +77,8 @@ public class ConfigProviderInFileTest
 		
 		Temperature EmptyTemperature = new TemperatureImpl(15.00f);
 		assertThat(configProviderFileImpl.getEmptyTemperature(), equalTo(EmptyTemperature));
+		
+		assertThat(configProviderFileImpl.getEuroPerKwhDay(), equalTo(0.185283f));
+		assertThat(configProviderFileImpl.getEuroPerKwhNight(), equalTo(0.216342f));
 	}
 }
