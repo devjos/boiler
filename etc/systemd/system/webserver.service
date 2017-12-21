@@ -1,0 +1,17 @@
+[Unit]
+Description=Temperature Webserver
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+#Group=<redmine group>
+WorkingDirectory=/srv/web/
+ExecStart=/usr/bin/webserver
+
+# Give a reasonable amount of time for the server to start up/shut down
+TimeoutSec=60
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,19 @@
+[Unit]
+Description=Boiler Controller
+After=syslog.target
+
+[Service]
+Type=simple
+User=root
+#Group=<redmine group>
+#WorkingDirectory=/srv/web/
+ExecStart=/usr/bin/java -jar /home/pi/boiler.jar
+
+# Give a reasonable amount of time for the server to start up/shut down
+TimeoutSec=60
+
+Restart=always
+RestartSec=10min
+
+[Install]
+WantedBy=multi-user.target

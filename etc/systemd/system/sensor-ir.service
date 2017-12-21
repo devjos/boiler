@@ -1,0 +1,18 @@
+[Unit]
+Description=Measure Temperature with IR-Sensor
+After=syslog.target
+
+[Service]
+Type=simple
+User=pi
+#Group=<redmine group>
+ExecStart=/usr/bin/sensor-ir
+
+# Give a reasonable amount of time for the server to start up/shut down
+TimeoutSec=60
+
+Restart=always
+RestartSec=10min
+
+[Install]
+WantedBy=multi-user.target
