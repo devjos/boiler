@@ -9,6 +9,33 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <!-- put your configurations here -->
+          <transformers>
+  				<!-- add Main-Class to manifest file -->
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+  					<mainClass>de.schleger.boiler.main.BoilerMain</mainClass>
+  				</transformer>
+  			  </transformers>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
     <dependency>
         <groupId>commons-io</groupId>
