@@ -1,0 +1,9 @@
+<select ng-model="chart.period"
+  ng-init="chart.period = chart.options[0].value; chart.update()"
+  ng-change="chart.update()"
+  ng-options="option.value as option.name for option in chart.options">
+</select>
+<button ng-click="chart.update()">&#x21bb;</button>
+<span>{{chart.message}}</span>
+
+<div id="chartContainer" style="height: 100%; width: 100%;"></div>

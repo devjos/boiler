@@ -1,0 +1,11 @@
+<form id="editTemperature" class="form-horizontal" ng-submit="settings.submit()">
+    <div class="control-group" ng-repeat="key in settings.keys">
+      <label class="control-label" for="{{key}}">{{key}}</label>
+      <div class="controls">
+          <input ng-model="settings.settings[key]" type="number" id="{{key}}" min="1" max="99">
+      </div>
+    </br>
+    </div>
+    <button type="submit" class="btn btn-default">Save</button>
+  </form>
+  {{settings.message}}

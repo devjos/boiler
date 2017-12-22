@@ -1,0 +1,7 @@
+<form class="form-signin" ng-submit="login.login()">
+  <h2 class="form-signin-heading">Login</h2>
+  <input ng-model="login.user" class="form-control" placeholder="user" required="" autofocus="">
+  <input ng-model="login.pw" class="form-control" placeholder="password" required="" type="password">
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+</form>
+{{login.message}}
