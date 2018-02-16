@@ -59,8 +59,8 @@ public class HeatCostCalculatorImpl implements HeatCostCalculator
 				pricePerKwh = configProvider.getEuroPerKwhNight();
 			}
 			else{
-				LOG.warn("start in night, end in day not implemented yet");
-				pricePerKwh = 0;
+				LOG.warn("start in night, end in day. will take the price of the night for heating cost calculation");
+				pricePerKwh = configProvider.getEuroPerKwhNight();
 			}
 		}
 		else{

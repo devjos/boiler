@@ -45,4 +45,15 @@ public class HeatCostCalculatorTest
 		assertThat(cost, equalTo(4f));
 	}
 	
+	@Test
+	public void calculateCostNightToDay()
+  	{               
+  	    LocalDateTime start = LocalDateTime.of(2015, 2, 4, 05, 00);
+  	    LocalDateTime end = start.plusHours(2);
+  	    float cost = heatCostCalculator.calculate(start, end, HeatPower.HEAT_POWER_2);
+  	    // at the moment incorrectly assumes that all heating occured in the night
+  	    // usually this just happens when the heating switches off after night has ended
+  	    assertThat(cost, equalTo(8f));
+  	}
+	
 }
