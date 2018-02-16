@@ -5,8 +5,8 @@ import de.schleger.boiler.temperature.Temperature;
 
 public class HeatTimeCalculatorImpl implements HeatTimeCalculator
 {	
-	// 15 Min Buffer
-	private static final float HEAT_BUFFER = 15.0f;
+	// 20 Min Buffer
+	private static final float HEAT_BUFFER = 20.0f;
 	
 	private HeatTimeInterpolator heatTimeInterpolator;
 	
