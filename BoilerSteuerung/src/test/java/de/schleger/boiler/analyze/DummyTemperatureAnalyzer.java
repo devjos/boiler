@@ -4,21 +4,19 @@ import de.schleger.boiler.temperature.Temperature;
 
 public class DummyTemperatureAnalyzer implements TemperatureAnalyzer {
 
-	private Temperature t;
+    private Temperature t;
 
-	@Override
-	public Temperature getAverageTemperature() 
-	{
-		return t;
-	}
-	
-	public void setTemperature(Temperature t)
-	{
-		this.t = t;		
-	}
+    @Override
+    public Temperature getAverageTemperature() {
+        return t;
+    }
 
-	@Override
-	public void update() {
-		
-	}
+    public void setTemperature(Temperature t) {
+        this.t = t;
+    }
+
+    @Override
+    public void update() {
+
+    }
 }

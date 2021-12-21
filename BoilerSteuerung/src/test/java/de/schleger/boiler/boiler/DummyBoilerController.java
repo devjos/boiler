@@ -4,16 +4,14 @@ import de.schleger.boiler.config.HeatPower;
 
 public class DummyBoilerController implements BoilerController {
 
-	private HeatPower heatPower;
+    private HeatPower heatPower;
 
-	@Override
-	public void setHeatPower(HeatPower heatPower) 
-	{
-		this.heatPower = heatPower;
-	}
+    @Override
+    public void setHeatPower(HeatPower heatPower) {
+        this.heatPower = heatPower;
+    }
 
-	public Object getHeatPower() 
-	{
-		return heatPower;
-	}
+    public Object getHeatPower() {
+        return heatPower;
+    }
 }
