@@ -80,7 +80,7 @@ public class BoilerMain
 				new LogFileChecker(timeProvider, FILE_LOG_DIRECTORY, MAX_LOG_FILE_ALIVE_TIME_IN_DAYS, 
 						new LogDescriptor(BOILER_LOG, 32), 
 						new LogDescriptor(FILL_LEVEL_LOG, 32),
-						new LogDescriptor(COSTS_LOG, 366)));
+						new LogDescriptor(COSTS_LOG, 10*365 + 1))); //10 years
 		
 	    TimerTask boilerTaskImpl = new BoilerTaskImpl(new BoilerScheduleImpl(temperaturActionFilterList, informationProviderList));
 	    

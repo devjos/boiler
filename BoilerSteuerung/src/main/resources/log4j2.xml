@@ -30,7 +30,7 @@
 		<Policies>
 			<TimeBasedTriggeringPolicy />
 		</Policies>
-		<DefaultRolloverStrategy max="30"/>
+		<DefaultRolloverStrategy max="120"/> <!--10 years with 12 months/year -->
 	</RollingFile>
 </Appenders>
 <Loggers>
