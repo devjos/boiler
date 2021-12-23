@@ -15,7 +15,7 @@
     "express-session": "^1.13.0",
     "mocha": "~4.0.1",
     "moment": "~2.20.1",
-    "morgan": "~1.9.0",
+    "morgan": "~1.10.0",
     "properties": "~1.2.1",
     "really-need": "~1.9.0",
     "serve-favicon": "~2.4.5",
